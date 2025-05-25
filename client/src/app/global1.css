@@ -1,0 +1,172 @@
+.custom-inquiry-button {
+  background-color: #0057d9;
+  /* Matches the blue */
+  border: none;
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: none;
+  transition: background-color 0.3s ease;
+}
+
+.custom-inquiry-button:hover {
+  background-color: #0047b3;
+}
+
+/* Toggle styling start */
+.navbar-toggler {
+  border: none;
+  font-size: 1.25rem;
+}
+
+.navbar-toggler:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.nav-link {
+  color: #323232;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.navbar-brand {
+  font-size: 25px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.navbar-brand span {
+  color: blue;
+}
+
+.end {
+  padding-right: 0px;
+
+}
+
+#hoverCard {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+}
+
+#hoverCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+
+
+
+#experienceBox {
+  background-color: #0d6efd;
+  /* Bootstrap primary blue */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+
+
+
+.doctor-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+
+
+/* map */
+.map {
+  width: 100%;
+}
+
+.Google_map {
+  padding-left: 0px;
+  padding-right: 0px;
+
+}
+
+
+/* responsive media query */
+@media (max-width: 768px) {
+  .sm_none {
+    display: none;
+  }
+
+  .Home_right {
+    flex-direction: column-reverse;
+    padding: 20px 0;
+  }
+}
+
+/* components/InquirySlider.module.css */
+#inquiryButton {
+  background-color: #0057d9;
+  border: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#inquiryButton:hover {
+  background-color: #0047b3;
+}
+
+
+/* our services */
+.picc {
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.picc img {
+  object-fit: cover;
+  transition: transform 0.7s;
+
+}
+
+.picc:hover img {
+  transform: scale(1.3);
+}
+
+/* home */
+.Home {
+  /* background: url('../app/images/pppp.jpg') no-repeat center;
+  display: flex; */
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: 0;
+  opacity: 6.1;
+  background-color: rgba(0, 0, 0, 0.285);
+  /* Adjust opacity here */
+
+}
+.Home_body{
+  z-index: 99;
+  opacity: 7;
+}
+
+
+li{
+    list-style: none;
+}
+.News_img {
+    height: 65%;
+}
+
+.News_img img{
+    height: 50%;
+}
+
+.Doctors_card{
+  width: 100%;
+  height: 20%;
+}
+.Card{
+  height: 40%;
+}
