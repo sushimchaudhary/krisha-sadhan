@@ -41,27 +41,10 @@ export default function Dashboard() {
   const router = useRouter();
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState("");
+   const [files, setFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!image) return toast.warn('Please select an image!');
-
-  const formData = new FormData();
-  formData.append('image', image);
-
-  try {
-    await axios.post('http://localhost:5000/api/slides/upload', formData);
-    toast.success('Slider image uploaded successfully!');
-  } catch (err) {
-    console.error('Upload failed:', err);
-    const message =
-      err?.response?.data?.message || 'Something went wrong while uploading.';
-    toast.error(`Upload failed: ${message}`);
-  }
-};
-
-
+  
 
   useEffect(() => {
     const fetchAdminData = async () => {
@@ -160,27 +143,66 @@ const handleSubmit = async (e) => {
     }
   };
 
+//  banner Upload
   const handleImageUpload = async () => {
-  if (!file) {
-    toast.error("Please select an image first");
-    return;
-  }
+    if (!file) {
+      toast.error("Please select an image first");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/image/upload",
+        formData
+      );
+      setImageUrl(res.data.imageUrl);
+      toast.success("Banner Image uploaded successfully!");
+    } catch (error) {
+      console.error("Banner Image Upload Error:", error);
+      toast.error("Failed to upload image.");
+    }
+  };
+
+
+  // ✅ Define handleFilesChange before return
+  const handleFilesChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    setFiles(selectedFiles);
+
+    const filePreviews = selectedFiles.map(file => URL.createObjectURL(file));
+    setPreviews(filePreviews);
+  };
+
+  // slider image uploaded 
+const handleUpload = async () => {
+  if (files.length === 0) return toast.error('कृपया कम्तीमा एउटा तस्विर छान्नुहोस्');
 
   const formData = new FormData();
-  formData.append("image", file);
+  files.forEach(file => formData.append('sliderImages', file));
 
   try {
-    const res = await axios.post(
-      "http://localhost:5000/api/image/upload",
-      formData
+    const response = await axios.post(
+      'http://localhost:5000/api/about-sliders/upload',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
     );
-    setImageUrl(res.data.imageUrl);
-    toast.success("Banner Image uploaded successfully!");
+
+    toast.success('Slider image हरू सफलतापूर्वक अपलोड भयो!');
+    console.log(response.data);
   } catch (error) {
-    console.error("Banner Image Upload Error:", error);
-    toast.error("Failed to upload image.");
+    console.error(error);
+    toast.error('Image upload गर्न सकिएन');
   }
 };
+
+
   return (
     <div className="flex flex-col bg-gray-50 min-h-screen">
       <div className="flex flex-1">
@@ -261,7 +283,7 @@ const handleSubmit = async (e) => {
             </Card>
           </div>
 
-  {/* Upload home banner  */}
+          {/* Upload home banner  */}
 
           <div className="mt-8 bg-white p-4 rounded shadow-md">
             <Toaster position="top-right" />
@@ -301,40 +323,45 @@ const handleSubmit = async (e) => {
             )}
           </div>
 
-
-
+          {/* Slider image uploaded */}
           <div className="mt-8 bg-white p-4 rounded shadow-md">
-            <Toaster position="top-right" />
-            <h2 className="text-xl font-semibold mb-2">Upload Slider Welcome Image</h2>
-            <form
-              onSubmit={handleSubmit}
-              className="max-w-sm mx-auto p-6 bg-white rounded-lg shadow-md"
-            >
-              <label className="block mb-4">
-                <span className="sr-only">Choose profile photo</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setImage(e.target.files[0])}
-                  className="block w-full text-sm text-gray-600
-                 file:mr-4 file:py-2 file:px-4
-                 file:rounded-full file:border-0
-                 file:text-sm file:font-semibold
-                 file:bg-blue-50 file:text-blue-700
-                 hover:file:bg-blue-100
-                 cursor-pointer
-                 "
-                />
-              </label>
-
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-300"
-              >
-                Upload
-              </button>
-            </form>
-          </div>
+                <Toaster position="top-right" />
+                <div className="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md">
+                  <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+                    Slider Image Upload (About Page)
+                  </h2>
+          
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFilesChange}
+                    multiple
+                    className="block w-full text-gray-700 mb-4
+                      file:py-2 file:px-4 file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-green-100 file:text-green-700
+                      hover:file:bg-green-200 cursor-pointer"
+                  />
+          
+                  <button
+                    onClick={handleUpload}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-md transition duration-200"
+                  >
+                    Upload Slider Images
+                  </button>
+                </div>
+          
+                {previews.length > 0 && (
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-600 mb-1">तस्विरहरू:</p>
+                    <div className="flex flex-wrap gap-4">
+                      {previews.map((url, idx) => (
+                        <img key={idx} src={url} alt="Slider preview" className="w-32 h-20 object-cover rounded border" />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
         </main>
       </div>
 

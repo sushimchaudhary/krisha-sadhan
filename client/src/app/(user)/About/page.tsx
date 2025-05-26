@@ -1,15 +1,17 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+'use client'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function Page() {
   const [slides, setSlides] = useState([]);
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/slider')
-      .then((res) => setSlides(res.data))
+      .get("http://localhost:5000/api/about-sliders") // ensure this is your route
+      .then((res) => {
+        console.log(res.data);
+        setSlides(res.data);
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -25,38 +27,45 @@ function Page() {
               data-bs-ride="carousel"
             >
               <div className="carousel-inner">
-                {slides.map((slide, index) => (
-                  <div
-                    key={slide._id}
-                    className={`carousel-item ${index === 0 ? 'active' : ''}`}
-                  >
-                    <img
-                      src={slide.image}
-                      className="d-block w-100"
-                      alt="Slide"
-                    />
-                  </div>
-                ))}
+                {slides.length > 0 ? (
+                  slides.map((slide, index) => (
+                    <div
+                      key={slide._id || index}
+                      className={`carousel-item ${index === 0 ? "active" : ""}`}
+                    >
+                      <img
+                        src={slide.imageUrl}
+                        className="d-block w-100"
+                        alt={`Slide ${index + 1}`}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-muted">No slides found.</div>
+                )}
               </div>
-              <button
-                className="carousel-control-prev"
-                type="button"
-                data-bs-target="#carouselAutoplay"
-                data-bs-slide="prev"
-              >
-                <span className="carousel-control-prev-icon" />
-              </button>
-              <button
-                className="carousel-control-next"
-                type="button"
-                data-bs-target="#carouselAutoplay"
-                data-bs-slide="next"
-              >
-                <span className="carousel-control-next-icon" />
-              </button>
+              {slides.length > 1 && (
+                <>
+                  <button
+                    className="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#carouselAutoplay"
+                    data-bs-slide="prev"
+                  >
+                    <span className="carousel-control-prev-icon" />
+                  </button>
+                  <button
+                    className="carousel-control-next"
+                    type="button"
+                    data-bs-target="#carouselAutoplay"
+                    data-bs-slide="next"
+                  >
+                    <span className="carousel-control-next-icon" />
+                  </button>
+                </>
+              )}
             </div>
           </div>
-
           {/* Text Section */}
           <div className="col-lg-5">
             <h2 className="fw-bold">Welcome to Our Clinic</h2>
