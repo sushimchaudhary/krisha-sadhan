@@ -74,11 +74,22 @@ export const loginAdmin = async (req, res) => {
   }
 };
 
-// ✅ Logout Admin
-export const logoutAdmin = (req, res) => {
-  res.clearCookie('adminToken');
-  res.status(200).json({ message: 'Logout successful.' });
+// controllers/authController.js or .ts
+export const logoutAdmin = async (req, res) => {
+    try {
+    const user = await Auth.findById(req.user.id); // req.user from protect middleware
+    if (user) {
+      user.active = false;
+      await user.save();
+    }
+
+    res.clearCookie('adminToken');
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    res.status(500).json({ message: 'Logout failed', error });
+  }
 };
+
 
 // ✅ Get Admin by ID
 export const getAdminById = async (req, res) => {
@@ -110,12 +121,82 @@ export const getUserById = async (req, res) => {
   }
 };
 
+// ✅ Get All Users
+
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}, "username email role");
-    res.json(users);
+    const users = await Auth.find().select("-password"); // password field हटाइएको
+    res.status(200).json({ users });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching users" });
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch users" });
   }
 };
+
+
+// DELETE user by email
+export const deleteUserByEmail = async (req, res) => {
+  try {
+    const user = await Auth.findOneAndDelete({ email: req.params.email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// UPDATE user by email
+export const updateUserByEmail = async (req, res) => {
+  try {
+    const user = await Auth.findOneAndUpdate(
+      { email: req.params.email },
+      req.body,
+      { new: true }
+    );
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const login = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+
+    const isPasswordValid = await user.comparePassword(password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    // Login सफल हुँदा active true set गर्ने
+    user.active = true;
+    await user.save();
+
+    // Token generate
+    const token = generateToken(user);
+
+    res.json({ token, user });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    await User.findByIdAndUpdate(userId, { active: false });
+    res.status(200).json({ message: 'Logout सफल भयो, active false गरियो' });
+  } catch (error) {
+    console.error('Logout error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 

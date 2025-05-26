@@ -11,6 +11,7 @@ import adminRoutes from './routes/adminRoutes.js';
 import newsRoutes from './routes/newsRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Auth from './models/authModel.js';
 
 
 dotenv.config(); // Load .env
@@ -39,19 +40,24 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/news', newsRoutes);
 
-app.use('/api/admin', adminRoutes);
+
 
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(path.resolve(), '/uploads')));
 
-// ✅ Example route
-app.get('/api/admin/stats', (req, res) => {
-  res.json({
-    totalUsers: 10,
-    totalDoctors: 5,
-    totalAppointments: 20,
-  });
+
+
+app.get("/api/auths", async (req, res) => {
+  try {
+    const auths = await Auth.find(); // Assuming User is mongoose model
+    res.json({ success: true, auths });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
+
+
+
 
 // Error Handling Middleware
 app.use(errorMiddleware);
