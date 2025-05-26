@@ -32,50 +32,55 @@ const DoctorPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 bg-gradient-to-b min-h-screen">
-      <h2 className="text-4xl font-extrabold text-center text-blue-800 mb-12">
+    <div className="max-w-7xl mx-auto px-4 py-12 min-h-screen bg-gradient-to-b from-blue-50 via-white to-white">
+      <h2 className="text-4xl font-extrabold text-center text-blue-800 mb-4">
         👨‍⚕️ Meet Our Doctors
       </h2>
-       <p className="mb-5 text-center">
-         Our team of dedicated healthcare professionals committed to providing you with exceptional care.
-        </p>
+      <p className="mb-10 text-center text-gray-600">
+        Our team of dedicated healthcare professionals is committed to providing
+        you with exceptional care.
+      </p>
 
-      <div className="row gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {doctors.map((doc) => (
           <div
             key={doc._id}
-            className="col-12 col-sm-6 col-lg-3 rounded Card shadow-lg"
+            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-4 flex flex-col"
           >
-            <div className="card1 Doctors_card">
-            <img
-              src={`http://localhost:5000${doc.image}`}
-              alt={doc.name}
-              className="img-fluid doctor-img py-2 rounded-2xl"
-            />
+            <div className="w-full h-56 overflow-hidden rounded-xl mb-4">
+              <img
+                src={`http://localhost:5000${doc.image}`}
+                alt={doc.name}
+                className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              />
+            </div>
 
-            <div className="p-4 flex flex-col flex-grow">
-              <h3 className="text-xl font-semibold text-gray-900">{doc.name}</h3>
-              <span className="text-blue-600 font-medium">{doc.specialization}</span>
-              <span className="text-sm text-gray-500">{doc.experience}</span>
-              <p className="text-sm text-gray-700 mt-1 line-clamp-3">{doc.bio}</p>
+            <div className="card-body flex flex-col">
+              <h3 className="card-title text-xl font-semibold text-gray-900">
+                {doc.name}
+              </h3>
+              <p className="text-blue-600 font-medium">{doc.specialization}</p>
+              <p className="text-sm text-gray-500">{doc.experience}</p>
+              <p className="card-text text-sm text-gray-700 mt-2 line-clamp-3">
+                {doc.bio}
+              </p>
 
-              <div className="gap-2 ">
+              <div className="mt-2 space-y-1">
                 {doc.education.map((edu, index) => (
                   <div
                     key={`edu-${doc._id}-${index}`}
                     className="text-red-500 text-xs"
                   >
-                    {edu}
+                    🎓 {edu}
                   </div>
                 ))}
               </div>
 
               <Link href={`/doctors/${doc._id}`} className="mt-4">
-                <Button className="mt-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg w-full transition">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full rounded-lg transition">
                   Learn More
                 </Button>
               </Link>
-            </div>
             </div>
           </div>
         ))}

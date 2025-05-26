@@ -6,14 +6,22 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import LogoutButton from "@/component/LogoutButton";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; 
 import UserModal from "@/component/UserModel";
+import axios from "axios";
+
 
 interface TokenPayload {
   id: string;
   role: string;
   iat?: number;
   exp?: number;
+}
+
+interface User {
+  username: string;
+  email: string;
+  role: string;
 }
 
 export default function Dashboard() {
@@ -25,7 +33,7 @@ export default function Dashboard() {
 
   const [username, setUsername] = useState("Admin");
   const [showUserModal, setShowUserModal] = useState(false);
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   const router = useRouter();
 
@@ -35,15 +43,21 @@ export default function Dashboard() {
         const token = Cookies.get("adminToken");
         if (!token) {
           console.log("No token found");
+          router.push("/auth/adminLogin");
           return;
         }
 
         const decoded = jwtDecode<TokenPayload>(token);
         const adminId = decoded.id;
 
-        const res = await fetch(
-          `http://localhost:5000/api/auth/get-admin/${adminId}`
-        );
+        const res = await fetch(`http://localhost:5000/api/auth/get-admin/${adminId}`);
+
+        if (!res.ok) {
+          console.error("Failed to fetch admin data, status:", res.status);
+          router.push("/auth/adminLogin");
+          return;
+        }
+
         const data = await res.json();
 
         if (data.username) {
@@ -57,6 +71,10 @@ export default function Dashboard() {
     const fetchStats = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/admin/stats");
+        if (!res.ok) {
+          console.error("Failed to fetch stats, status:", res.status);
+          return;
+        }
         const data = await res.json();
         setStats(data);
       } catch (error) {
@@ -66,21 +84,54 @@ export default function Dashboard() {
 
     fetchAdminData();
     fetchStats();
-  }, []);
+  }, [router]);
 
   const handleFetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/users");
+      const res = await fetch("http://localhost:5000/api/auth/users");
       const data = await res.json();
-      setUsers(data);
+
+      if (!Array.isArray(data.users)) {
+        console.error("Users data is not an array:", data);
+        alert("Unexpected data format received.");
+        return;
+      }
+
+      setUsers(data.users);
       setShowUserModal(true);
     } catch (error) {
       console.error("Failed to fetch users", error);
+      alert("An error occurred while fetching users.");
+    }
+  };
+
+ const handleDeleteUser = async (user: User) => {
+  console.log("Deleting user", user);
+  try {
+    await axios.delete(`http://localhost:5000/api/auth/users/${user.email}`);
+    setUsers((prev) => prev.filter((u) => u.email !== user.email));
+    alert(`${user.username} deleted successfully`);
+  } catch (error) {
+    console.error("Failed to delete user", error);
+    alert("Failed to delete user");
+  }
+};
+
+
+  const handleUpdateUser = async (updatedUser: User) => {
+    try {
+      await axios.put(`http://localhost:5000/api/auth/users/${updatedUser.email}`, updatedUser);
+      setUsers((prev) =>
+        prev.map((u) => (u.email === updatedUser.email ? updatedUser : u))
+      );
+      alert(`${updatedUser.username} updated successfully`);
+    } catch (error) {
+      alert("Failed to update user");
     }
   };
 
   return (
-    <div className="flex flex-col bg-gray-50">
+    <div className="flex flex-col bg-gray-50 min-h-screen">
       <div className="flex flex-1">
         {/* Sidebar */}
         <aside className="w-64 bg-gradient-to-b from-blue-100 to-blue-50 shadow-lg hidden md:flex flex-col justify-between">
@@ -163,7 +214,12 @@ export default function Dashboard() {
 
       {/* User Modal */}
       {showUserModal && (
-        <UserModal users={users} onClose={() => setShowUserModal(false)} />
+        <UserModal
+          users={users}
+          onClose={() => setShowUserModal(false)}
+          onDeleteUser={handleDeleteUser}
+          onUpdateUser={handleUpdateUser}
+        />
       )}
     </div>
   );

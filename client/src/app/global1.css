@@ -156,17 +156,79 @@ li{
     list-style: none;
 }
 .News_img {
-    height: 65%;
-}
-
-.News_img img{
-    height: 50%;
-}
-
-.Doctors_card{
+  position: relative;
   width: 100%;
-  height: 20%;
+  height: auto;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
-.Card{
-  height: 40%;
+
+.News_img:hover {
+  transform: scale(1.02);
+}
+
+.News_img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.News_img img:hover {
+  transform: scale(1.05);
+}
+
+
+.Doctors_card {
+  width: 100%;
+  height: 20;
+  max-width: 1200px;
+
+  margin: 0 auto;
+  padding: 2px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.Card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  height: 40%; /* Full height inside the grid cell */
+  display: flex;
+  flex-direction: column;
+}
+
+.Card:hover {
+  transform: translateY(-5px);
+}
+
+.Card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.Card-body {
+  padding: 1rem;
+  flex-grow: 1;
+}
+
+.Card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.Card-text {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }

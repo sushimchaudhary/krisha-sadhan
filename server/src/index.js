@@ -12,6 +12,8 @@ import newsRoutes from './routes/newsRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Auth from './models/authModel.js';
+import imageRoutes from './routes/homeImageRoutes.js';
+import sliderRoutes from './routes/sliderRoutes.js';
 
 
 dotenv.config(); // Load .env
@@ -40,10 +42,14 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/news', newsRoutes);
 
+app.use('/api/slider', sliderRoutes);
 
 
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(path.resolve(), '/uploads')));
+
+// home page 
+app.use('/api/image', imageRoutes);
 
 
 
