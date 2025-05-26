@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import LogoutButton from "@/component/LogoutButton";
 import Cookies from "js-cookie";
-import {jwtDecode} from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode";
 import UserModal from "@/component/UserModel";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 
 interface TokenPayload {
@@ -34,8 +35,33 @@ export default function Dashboard() {
   const [username, setUsername] = useState("Admin");
   const [showUserModal, setShowUserModal] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
-
+  const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const fileInputRef = useRef(null);
   const router = useRouter();
+  const [image, setImage] = useState(null);
+  const [message, setMessage] = useState("");
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!image) return toast.warn('Please select an image!');
+
+  const formData = new FormData();
+  formData.append('image', image);
+
+  try {
+    await axios.post('http://localhost:5000/api/slides/upload', formData);
+    toast.success('Slider image uploaded successfully!');
+  } catch (err) {
+    console.error('Upload failed:', err);
+    const message =
+      err?.response?.data?.message || 'Something went wrong while uploading.';
+    toast.error(`Upload failed: ${message}`);
+  }
+};
+
+
 
   useEffect(() => {
     const fetchAdminData = async () => {
@@ -50,7 +76,9 @@ export default function Dashboard() {
         const decoded = jwtDecode<TokenPayload>(token);
         const adminId = decoded.id;
 
-        const res = await fetch(`http://localhost:5000/api/auth/get-admin/${adminId}`);
+        const res = await fetch(
+          `http://localhost:5000/api/auth/get-admin/${adminId}`
+        );
 
         if (!res.ok) {
           console.error("Failed to fetch admin data, status:", res.status);
@@ -105,22 +133,24 @@ export default function Dashboard() {
     }
   };
 
- const handleDeleteUser = async (user: User) => {
-  console.log("Deleting user", user);
-  try {
-    await axios.delete(`http://localhost:5000/api/auth/users/${user.email}`);
-    setUsers((prev) => prev.filter((u) => u.email !== user.email));
-    alert(`${user.username} deleted successfully`);
-  } catch (error) {
-    console.error("Failed to delete user", error);
-    alert("Failed to delete user");
-  }
-};
-
+  const handleDeleteUser = async (user: User) => {
+    console.log("Deleting user", user);
+    try {
+      await axios.delete(`http://localhost:5000/api/auth/users/${user.email}`);
+      setUsers((prev) => prev.filter((u) => u.email !== user.email));
+      alert(`${user.username} deleted successfully`);
+    } catch (error) {
+      console.error("Failed to delete user", error);
+      alert("Failed to delete user");
+    }
+  };
 
   const handleUpdateUser = async (updatedUser: User) => {
     try {
-      await axios.put(`http://localhost:5000/api/auth/users/${updatedUser.email}`, updatedUser);
+      await axios.put(
+        `http://localhost:5000/api/auth/users/${updatedUser.email}`,
+        updatedUser
+      );
       setUsers((prev) =>
         prev.map((u) => (u.email === updatedUser.email ? updatedUser : u))
       );
@@ -130,6 +160,27 @@ export default function Dashboard() {
     }
   };
 
+  const handleImageUpload = async () => {
+  if (!file) {
+    toast.error("Please select an image first");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/image/upload",
+      formData
+    );
+    setImageUrl(res.data.imageUrl);
+    toast.success("Banner Image uploaded successfully!");
+  } catch (error) {
+    console.error("Banner Image Upload Error:", error);
+    toast.error("Failed to upload image.");
+  }
+};
   return (
     <div className="flex flex-col bg-gray-50 min-h-screen">
       <div className="flex flex-1">
@@ -208,6 +259,81 @@ export default function Dashboard() {
                 <p className="text-3xl font-bold">{stats.totalAppointments}</p>
               </CardContent>
             </Card>
+          </div>
+
+  {/* Upload home banner  */}
+
+          <div className="mt-8 bg-white p-4 rounded shadow-md">
+            <Toaster position="top-right" />
+            <div className="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+                Upload Home Banner Image
+              </h2>
+
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={(e) => setFile(e.target.files[0])}
+                className="block w-full text-gray-700 mb-4
+               file:py-2 file:px-4 file:border-0
+               file:text-sm file:font-semibold
+               file:bg-blue-100 file:text-blue-700
+               hover:file:bg-blue-200 cursor-pointer"
+              />
+
+              <button
+                onClick={handleImageUpload}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-md transition duration-200"
+              >
+                Upload
+              </button>
+            </div>
+
+            {imageUrl && (
+              <div className="mt-4">
+                <p className="text-sm text-gray-600 mb-1">Preview:</p>
+                <img
+                  src={imageUrl}
+                  alt="Uploaded"
+                  className="w-72 rounded border"
+                />
+              </div>
+            )}
+          </div>
+
+
+
+          <div className="mt-8 bg-white p-4 rounded shadow-md">
+            <Toaster position="top-right" />
+            <h2 className="text-xl font-semibold mb-2">Upload Slider Welcome Image</h2>
+            <form
+              onSubmit={handleSubmit}
+              className="max-w-sm mx-auto p-6 bg-white rounded-lg shadow-md"
+            >
+              <label className="block mb-4">
+                <span className="sr-only">Choose profile photo</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImage(e.target.files[0])}
+                  className="block w-full text-sm text-gray-600
+                 file:mr-4 file:py-2 file:px-4
+                 file:rounded-full file:border-0
+                 file:text-sm file:font-semibold
+                 file:bg-blue-50 file:text-blue-700
+                 hover:file:bg-blue-100
+                 cursor-pointer
+                 "
+                />
+              </label>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-300"
+              >
+                Upload
+              </button>
+            </form>
           </div>
         </main>
       </div>

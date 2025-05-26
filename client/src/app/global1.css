@@ -142,7 +142,7 @@
   background-attachment: fixed;
   z-index: 0;
   opacity: 6.1;
-  background-color: rgba(0, 0, 0, 0.285);
+  /* background-color: rgba(0, 0, 0, 0.285); */
   /* Adjust opacity here */
 
 }

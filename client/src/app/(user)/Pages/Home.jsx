@@ -1,14 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
-import { cardData } from "./Javascript";
-import { welcomeData } from "./Javascript";
-import { Services } from "./Javascript";
-import { doctors } from "./Javascript";
-// import Image from 'next/image';
-import { articles } from "./Javascript";
-// import { Container, Row, Col, Card, Button, Form, } from 'react-bootstrap';
-import { slides } from "./Javascript";
+import React, { useEffect, useState } from "react";
 
+import { Services } from "./Javascript";
+import About from "@/app/(user)/About/page";
+import Service from "@/app/(user)/Services/page";
+import DoctorPage from "../Docter/page";
+import AppointmentPage from "../Appointment/page";
 function Home() {
   useEffect(() => {
     const carousel = document.querySelector("#carouselAutoplay");
@@ -20,13 +17,31 @@ function Home() {
       });
     }
   }, []);
+
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    // Backend बाट latest image URL fetch गर्ने function
+    async function fetchImage() {
+      try {
+        const res = await fetch("http://localhost:5000/api/image/latest");
+        const data = await res.json();
+        setImageUrl(data.imageUrl);
+      } catch (error) {
+        console.error("Failed to fetch image", error);
+      }
+    }
+
+    fetchImage();
+  }, []);
+
   return (
     <>
-      {/* HOme section  */}
-      <section className="bg-dark min-vh-100 d-flex align-items-center Home text-primary">
+      {/* home section */}
+      <section className="min-vh-100 d-flex align-items-center Home text-primary">
         <div className="container">
           <div className="row">
-            <div className="col-md-6 text-center text-md-start mb-4 mb-md-0  Home_body">
+            <div className="col-md-6 text-center text-md-start mb-4 mb-md-0 Home_body">
               <p className="text-uppercase small fw-bold mb-2">
                 Welcome to Medcare
               </p>
@@ -42,138 +57,33 @@ function Home() {
                 Book An Appointment
               </button>
             </div>
-          </div>
-          <div className="col-md-6 text-center">
-            <img
-              src="/S.N.jpg"
-              alt="Doctor"
-              className="img-fluid"
-              style={{ maxHeight: "500px" }}
-            />
+
+            <div
+              className="col-md-6"
+              style={{
+                backgroundImage: `url(${imageUrl})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                minHeight: "500px",
+              }}
+            >
+              <div
+                className="col-md-6 right-bg-image"
+                style={{ backgroundImage: `url(${imageUrl})` }}
+              >
+                {!imageUrl && <p>Loading image...</p>}
+              </div>
+            </div>
           </div>
         </div>
-        {/* <Container>
-          <Row className="align-items-center Home_right">
-            <Col md={6} className="">
-              <p className="text-uppercase small fw-bold mb-2">Welcome to Medcare</p>
-              <h1 className="display-4 fw-bold">Taking care of your health is our top priority.</h1>
-              <p className="mt-3 mb-4 text-dark fw-bold">
-                Being healthy is more than just not getting sick. It entails mental, physical,
-                and social well-being. It's not just about treatment, it's about healing.
-              </p>
-              <Button variant="success" size="lg">Book An Appointment</Button>
-            </Col>
-            <Col md={6} className="text-center">
-              <img
-                src="/S.N.jpg"
-                alt="Doctor"
-                className="img-fluid"
-                style={{ maxHeight: '500px' }}
-
-              />
-
-            </Col>
-          </Row>
-        </Container> */}
       </section>
 
       {/* Welcome to Bista Polyclinic */}
-      <section>
-        <div className="container py-5">
-          <div className="row align-items-center bg-white shadow rounded-4 p-4 g-3 justify-content-between ">
-            {/* Image Section */}
-            <div className="col-lg-6 mb-4 mb-lg-0">
-              {/* <img
-                src={welcomeData.image}
-                className="card-img-top img-fluid rounded"
-              /> */}
-              <div
-                id="carouselAutoplay"
-                className="carousel slide"
-                data-bs-ride="carousel"
-              >
-                <div className="carousel-inner">
-                  {slides.map((slide, index) => (
-                    <div
-                      key={slide.id}
-                      className={`carousel-item ${index === 0 ? "active" : ""}`}
-                    >
-                      <img
-                        src={slide.image}
-                        className="d-block w-100"
-                        alt={slide.alt}
-                      />
-                      <div className="carousel-caption d-none d-md-block">
-                        <h5>{slide.caption}</h5>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <button
-                  className="carousel-control-prev"
-                  type="button"
-                  data-bs-target="#carouselAutoplay"
-                  data-bs-slide="prev"
-                >
-                  <span className="carousel-control-prev-icon" />
-                </button>
-                <button
-                  className="carousel-control-next"
-                  type="button"
-                  data-bs-target="#carouselAutoplay"
-                  data-bs-slide="next"
-                >
-                  <span className="carousel-control-next-icon" />
-                </button>
-              </div>
-            </div>
-
-            {/* Text Section */}
-            {/* <div className="col-lg-1 hidden">
-            </div> */}
-            <div className="col-lg-5">
-              <h2 className="fw-bold">{welcomeData.title}</h2>
-              <hr />
-              <p className="text-muted">{welcomeData.intro}</p>
-              <p className="text-muted">{welcomeData.details}</p>
-              <button className="btn btn-primary mt-3 px-4">
-                {welcomeData.buttonText}
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <About />
 
       {/* My Services */}
-      <section>
-        <div className="container py-5">
-          <div className="row text-center">
-            <h2 className="mb-3 text-primary fw-bold">My Services</h2>
-            <p className="text-muted mb-5">
-              Comprehensive digital marketing solutions for your business
-            </p>
-          </div>
-
-          <div className="row g-4 justify-content-center">
-            {cardData.map((card, index) => (
-              <div className="col-12 col-sm-6 col-lg-3" key={index}>
-                <div
-                  className={`card h-100 text-center shadow-sm`}
-                  id="hoverCard"
-                >
-                  <div className="card-body">
-                    <div className={`mb-3 fs-2 ${card.color}`}>
-                      <i className={`bi ${card.icon}`}></i>
-                    </div>
-                    <h5 className="card-title fw-bold">{card.title}</h5>
-                    <p className="card-text">{card.text}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Service />
 
       {/* Years Of experience */}
       <section>
@@ -231,48 +141,11 @@ function Home() {
         </div>
       </section>
 
-      {/* Our Services */}
-      <section>
-        <div className="container py-5 text-center">
-          <p className="text-primary fw-semibold mb-1">Our Services</p>
-          <h2 className="fw-bold mb-3">Comprehensive Healthcare Services</h2>
-          <p className="mb-5 px-2 px-md-5">
-            We offer a wide range of medical services to meet all your
-            healthcare needs. Our specialized departments provide comprehensive
-            care with the latest medical technologies.
-          </p>
+      {/* meet our doctor  */}
+      <DoctorPage />
 
-          <div className="row g-4">
-            {Services.map((Services, idx) => (
-              <div key={idx} className="col-12 col-md-6 col-lg-4">
-                <div className="card h-100 shadow-sm">
-                  <div className="picc">
-                    <img
-                      src={Services.image}
-                      alt={Services.title}
-                      className="card-img-top img-fluid"
-                    />
-                  </div>
-                  <div className="card-body text-start">
-                    <h5 className="card-title fw-bold">{Services.title}</h5>
-                    <p className="card-text">{Services.description}</p>
-                    <a
-                      href={Services.link}
-                      className="text-primary text-decoration-none"
-                    >
-                      Learn More <span>&rarr;</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <button className="btn btn-primary mt-5 px-4 py-2">
-            View All Service
-          </button>
-        </div>
-      </section>
+      {/* Appointment */}
+      <AppointmentPage/>
 
       {/* Meet Our Expert Doctors */}
       {/* <section>
@@ -364,8 +237,7 @@ function Home() {
             ))}
           </Row>
         </div>
-      </section> */}
-{/* 
+      </section> 
       <section>
         <Container className="container my-5">
 
