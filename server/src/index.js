@@ -9,7 +9,8 @@ import authRoutes from './routes/authRoutes.js';
 import doctorRoutes from './routes/doctorRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import newsRoutes from './routes/newsRoutes.js';
-import imageRoutes from './routes/homeImageRoutes.js';
+// import imageRoutes from './routes/homeImageRoutes.js';
+import imageRoutes from './routes/imageRoutes.js';
 import aboutSliderRoutes from './routes/aboutSliderRoutes.js';
 
 import Auth from './models/authModel.js';
@@ -33,7 +34,7 @@ app.use(express.json());
 // ✅ Correct single static folder serve
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
-// // To serve slider images
+// To serve slider images
 // app.use('/uploads/sliders', express.static(path.join(__dirname, 'uploads/sliders')));
 
 
@@ -45,6 +46,7 @@ app.use('/api/doctors', doctorRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/image', imageRoutes); // Home page image upload
 app.use('/api/about-sliders', aboutSliderRoutes); // About page slider image
+app.use('/uploads', express.static('uploads'));
 
 // Test route (optional)
 app.get("/api/auths", async (req, res) => {
