@@ -35,9 +35,9 @@ export default function Dashboard() {
   const [username, setUsername] = useState("Admin");
   const [showUserModal, setShowUserModal] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
-const fileInputRef = useRef<HTMLInputElement | null>(null);
-const [file, setFile] = useState<File | null>(null);
-const [imageUrl, setImageUrl] = useState<string>("");
+// const fileInputRef = useRef<HTMLInputElement | null>(null);
+// const [file, setFile] = useState<File | null>(null);
+// const [imageUrl, setImageUrl] = useState<string>("");
 
   const router = useRouter();
   

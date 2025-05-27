@@ -15,7 +15,7 @@ import { fileURLToPath } from 'url';
 import Auth from './models/authModel.js';
 import imageRoutes from './routes/imageRoutes.js';
 import aboutSliderRoutes from './routes/aboutSliderRoutes.js';
-
+import serviceRoutes from './routes/serviceRoutes.js';
 
 dotenv.config(); // Load .env
 
@@ -44,7 +44,7 @@ app.use('/api/doctors', doctorRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/image', imageRoutes); // Home page image upload
 app.use('/api/about-sliders', aboutSliderRoutes); // About page slider image
-
+app.use('/api/services', serviceRoutes);
 // Test route (optional)
 app.get("/api/auths", async (req, res) => {
   try {
