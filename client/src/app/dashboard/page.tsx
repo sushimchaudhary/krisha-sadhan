@@ -39,10 +39,7 @@ export default function Dashboard() {
   const [imageUrl, setImageUrl] = useState("");
   const fileInputRef = useRef(null);
   const router = useRouter();
-  const [image, setImage] = useState(null);
-  const [message, setMessage] = useState("");
-   const [files, setFiles] = useState([]);
-  const [previews, setPreviews] = useState([]);
+  
 
   
 
@@ -167,41 +164,7 @@ export default function Dashboard() {
   };
 
 
-  // ✅ Define handleFilesChange before return
-  const handleFilesChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    setFiles(selectedFiles);
-
-    const filePreviews = selectedFiles.map(file => URL.createObjectURL(file));
-    setPreviews(filePreviews);
-  };
-
-  // slider image uploaded 
-const handleUpload = async () => {
-  if (files.length === 0) return toast.error('कृपया कम्तीमा एउटा तस्विर छान्नुहोस्');
-
-  const formData = new FormData();
-  files.forEach(file => formData.append('sliderImages', file));
-
-  try {
-    const response = await axios.post(
-      'http://localhost:5000/api/about-sliders/upload',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
-
-    toast.success('Slider image हरू सफलतापूर्वक अपलोड भयो!');
-    console.log(response.data);
-  } catch (error) {
-    console.error(error);
-    toast.error('Image upload गर्न सकिएन');
-  }
-};
-
+ 
 
   return (
     <div className="flex flex-col bg-gray-50 min-h-screen">
@@ -236,6 +199,18 @@ const handleUpload = async () => {
                 className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-200 transition-all"
               >
                 📰 News
+              </Link>
+               <Link
+                href="/auth/slider"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-200 transition-all"
+              >
+                 sliderImages
+              </Link>
+              <Link
+                href="/auth/homeBanner"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-200 transition-all"
+              >
+                 Home Banner
               </Link>
               <Link
                 href="/auth/adminRegister"
@@ -323,45 +298,7 @@ const handleUpload = async () => {
             )}
           </div>
 
-          {/* Slider image uploaded */}
-          <div className="mt-8 bg-white p-4 rounded shadow-md">
-                <Toaster position="top-right" />
-                <div className="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md">
-                  <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-                    Slider Image Upload (About Page)
-                  </h2>
-          
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFilesChange}
-                    multiple
-                    className="block w-full text-gray-700 mb-4
-                      file:py-2 file:px-4 file:border-0
-                      file:text-sm file:font-semibold
-                      file:bg-green-100 file:text-green-700
-                      hover:file:bg-green-200 cursor-pointer"
-                  />
-          
-                  <button
-                    onClick={handleUpload}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-md transition duration-200"
-                  >
-                    Upload Slider Images
-                  </button>
-                </div>
-          
-                {previews.length > 0 && (
-                  <div className="mt-4">
-                    <p className="text-sm text-gray-600 mb-1">तस्विरहरू:</p>
-                    <div className="flex flex-wrap gap-4">
-                      {previews.map((url, idx) => (
-                        <img key={idx} src={url} alt="Slider preview" className="w-32 h-20 object-cover rounded border" />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+         
         </main>
       </div>
 

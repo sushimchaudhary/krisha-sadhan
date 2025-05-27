@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
+import HomeSlider from "@/app/(user)/homeSlider/page"
 import { Services } from "./Javascript";
 import About from "@/app/(user)/About/page";
 import Service from "@/app/(user)/Services/page";
@@ -18,27 +18,29 @@ function Home() {
     }
   }, []);
 
-  const [imageUrl, setImageUrl] = useState(null);
+  // const [imageUrl, setImageUrl] = useState(null);
 
-  useEffect(() => {
-    // Backend बाट latest image URL fetch गर्ने function
-    async function fetchImage() {
-      try {
-        const res = await fetch("http://localhost:5000/api/image/latest");
-        const data = await res.json();
-        setImageUrl(data.imageUrl);
-      } catch (error) {
-        console.error("Failed to fetch image", error);
-      }
-    }
+  // useEffect(() => {
+  //   // Backend बाट latest image URL fetch गर्ने function
+  //   async function fetchImage() {
+  //     try {
+  //       const res = await fetch("http://localhost:5000/api/image/latest");
+  //       const data = await res.json();
+  //       setImageUrl(data.imageUrl);
+  //     } catch (error) {
+  //       console.error("Failed to fetch image", error);
+  //     }
+  //   }
 
-    fetchImage();
-  }, []);
+  //   fetchImage();
+  // }, []);
 
   return (
     <>
       {/* home section */}
-      <section className="min-vh-100 d-flex align-items-center Home text-primary">
+
+      <HomeSlider/>
+      {/* <section className="min-vh-100 d-flex align-items-center Home text-primary">
         <div className="container">
           <div className="row">
             <div className="col-md-6 text-center text-md-start mb-4 mb-md-0 Home_body">
@@ -77,7 +79,7 @@ function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Welcome to Bista Polyclinic */}
       <About />
