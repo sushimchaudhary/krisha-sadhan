@@ -33,10 +33,13 @@ export const uploadSliderImages = async (req, res) => {
 export const getSliderImages = async (req, res) => {
   try {
     const sliders = await AboutSlider.find().sort({ uploadedAt: -1 });
+    
+    // पूरा URL बनाउन
     const updated = sliders.map(slider => ({
       ...slider._doc,
       imageUrl: `${req.protocol}://${req.get('host')}${slider.imageUrl}`,
     }));
+
     res.status(200).json(updated);
   } catch (error) {
     console.error('Fetch error:', error);
@@ -46,17 +49,22 @@ export const getSliderImages = async (req, res) => {
 
 
 
-// Get all about slider images
-// export const getAboutSliderImages = async (req, res) => {
-//   try {
-//     const sliders = await AboutSlider.find();
-//     const updated = sliders.map((slider) => ({
-//       ...slider._doc,
-//       image: `${req.protocol}://${req.get('host')}/uploads/aboutSliders/${slider.image}`,
-//     }));
-//     res.json(updated);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Failed to fetch about slider images' });
-//   }
-// };
+
+export const deleteSliderById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleted = await AboutSlider.findByIdAndDelete(id);  // Use AboutSlider here
+    if (!deleted) {
+      return res.status(404).json({ message: 'Slide not found' });
+    }
+    res.json({ message: 'Slide deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
+
 

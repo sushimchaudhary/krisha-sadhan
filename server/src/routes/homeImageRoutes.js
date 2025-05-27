@@ -27,18 +27,31 @@ router.post('/upload', upload.single('image'), async (req, res) => {
 });
 
 
-// 🔽 Fetch Latest Uploaded Image
-router.get('/latest', async (req, res) => {
-  try {
-    const image = await Image.findOne().sort({ createdAt: -1 }); // 👈 or 'uploadedAt'
-    if (!image) return res.status(404).json({ message: 'No image found' });
+// // 🔽 Fetch Latest Uploaded Image
+// router.get('/latest', async (req, res) => {
+//   try {
+//     const image = await Image.findOne().sort({ createdAt: -1 }); // 👈 or 'uploadedAt'
+//     if (!image) return res.status(404).json({ message: 'No image found' });
 
-    res.json({ imageUrl: image.imageUrl });
+//     res.json({ imageUrl: image.imageUrl });
+//   } catch (error) {
+//     console.error('Fetch latest image error:', error);
+//     res.status(500).json({ message: 'Failed to fetch latest image' });
+//   }
+// });
+
+
+// 🔽 Get All Slider Images
+router.get('/all', async (req, res) => {
+  try {
+    const images = await Image.find().sort({ createdAt: -1 });
+    res.json(images); // array of { _id, imageUrl }
   } catch (error) {
-    console.error('Fetch latest image error:', error);
-    res.status(500).json({ message: 'Failed to fetch latest image' });
+    console.error('Fetch all images error:', error);
+    res.status(500).json({ message: 'Failed to fetch images' });
   }
 });
+
 
 
 export default router;
