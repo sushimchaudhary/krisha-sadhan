@@ -85,3 +85,30 @@ export const deleteDoctor = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+
+// Get a doctor by ID
+export const getDoctorById = async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.params.id).select('_id name specialization education experience bio image');
+    if (!doctor) return res.status(404).json({ message: 'Doctor not found' });
+
+    const response = {
+      id: doctor._id,
+      title: doctor.name,  // renamed from name to title
+      specialization: doctor.specialization,
+      education: doctor.education,
+      experience: doctor.experience,
+      bio: doctor.bio,
+      image: doctor.image,
+    };
+
+    res.json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+

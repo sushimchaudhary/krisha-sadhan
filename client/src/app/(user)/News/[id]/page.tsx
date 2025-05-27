@@ -1,7 +1,5 @@
-// app/news/[id]/page.tsx
-
+// app/(user)/News/[id]/page.tsx
 import axios from "axios";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
 interface News {
@@ -28,7 +26,7 @@ const getNewsById = async (id: string): Promise<News | null> => {
   }
 };
 
-const NewsDetailPage = async ({ params }: Props) => {
+export default async function NewsDetailPage({ params }: Props) {
   const news = await getNewsById(params.id);
 
   if (!news) return notFound();
@@ -47,6 +45,4 @@ const NewsDetailPage = async ({ params }: Props) => {
       </div>
     </div>
   );
-};
-
-export default NewsDetailPage;
+}

@@ -117,8 +117,8 @@ function Header() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" href="/Docter">
-                    Docter
+                  <Link className="nav-link" href="/Doctor">
+                    Doctors
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -152,19 +152,19 @@ function Header() {
                   </li>
                 )}
 
-                {!isAdmin && (
+                {/* {!isAdmin && (
                   <li>
                     <Link
                       className="text-decoration-none"
                       href="/auth/adminLogin"
                     >
                       <button className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90 transition">
-                        Login
+                       
                       </button>
                     </Link>
                   </li>
 
-                )}
+                )} */}
                 </div>
               </ul>
             </div>

@@ -76,7 +76,7 @@ const DoctorPage = () => {
                 ))}
               </div>
 
-              <Link href={`/doctors/${doc._id}`} className="mt-4">
+              <Link href={`/Doctor/${doc._id}`} className="mt-4">
                 <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full rounded-lg transition">
                   Learn More
                 </Button>

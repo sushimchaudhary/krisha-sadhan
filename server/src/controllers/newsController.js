@@ -58,9 +58,9 @@ export const deleteNews = async (req, res) => {
 export const getNewsById = async (req, res) => {
   try {
     const news = await News.findById(req.params.id);
-    if (!news) return res.status(404).json({ message: "News not found" });
+    if (!news) return res.status(404).json({ message: 'News not found' });
     res.json(news);
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: err.message });
   }
 };

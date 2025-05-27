@@ -4,7 +4,7 @@ import HomeSlider from "@/app/(user)/homeSlider/page"
 import { Services } from "./Javascript";
 import About from "@/app/(user)/About/page";
 import Service from "@/app/(user)/Services/page";
-import DoctorPage from "../Docter/page";
+import DoctorPage from "../Doctor/page";
 import AppointmentPage from "../Appointment/page";
 function Home() {
   useEffect(() => {
