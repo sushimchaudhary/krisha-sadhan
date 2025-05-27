@@ -6,33 +6,33 @@ import toast, { Toaster } from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 
-interface News {
+interface Service {
   _id: string;
+  image: string;
   title: string;
   description: string;
-  author: string;
-  image: string;
+  link: string;
 }
 
-const AddNewsPage = () => {
+const AddServicesPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [author, setAuthor] = useState("");
+  const [link, setLink] = useState("");
   const [image, setImage] = useState<File | null>(null);
-  const [newsList, setNewsList] = useState<News[]>([]);
+  const [servicesList, setServicesList] = useState<Service[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchNews();
+    fetchServices();
   }, []);
 
-  const fetchNews = async () => {
+  const fetchServices = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/news");
-      setNewsList(res.data);
+      const res = await axios.get("http://localhost:5000/api/services/all");
+      setServicesList(res.data);
     } catch (err) {
-      console.error("Fetch news error", err);
-      toast.error("Could not load news");
+      console.error("Fetch services error", err);
+      toast.error("Could not load services");
     }
   };
 
@@ -44,7 +44,7 @@ const AddNewsPage = () => {
   const resetForm = () => {
     setTitle("");
     setDescription("");
-    setAuthor("");
+    setLink("");
     setImage(null);
     setEditingId(null);
   };
@@ -57,25 +57,25 @@ const AddNewsPage = () => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
-      formData.append("author", author);
+      formData.append("link", link);
       if (image) formData.append("image", image);
 
       if (editingId) {
         const res = await axios.put(
-          `http://localhost:5000/api/news/${editingId}`,
+          `http://localhost:5000/api/services/${editingId}`,
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
-        setNewsList((prev) =>
+        setServicesList((prev) =>
           prev.map((item) => (item._id === editingId ? res.data : item))
         );
-        toast.success("News updated!");
+        toast.success("Service updated!");
       } else {
-        const res = await axios.post("http://localhost:5000/api/news", formData, {
+        const res = await axios.post("http://localhost:5000/api/services", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        setNewsList((prev) => [...prev, res.data]);
-        toast.success("News added!");
+        setServicesList((prev) => [...prev, res.data]);
+        toast.success("Service added!");
       }
 
       resetForm();
@@ -85,19 +85,19 @@ const AddNewsPage = () => {
     }
   };
 
-  const handleEdit = (item: News) => {
+  const handleEdit = (item: Service) => {
     setTitle(item.title);
     setDescription(item.description);
-    setAuthor(item.author);
+    setLink(item.link);
     setEditingId(item._id);
     setImage(null);
   };
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:5000/api/news/${id}`);
-      setNewsList(newsList.filter((item) => item._id !== id));
-      toast.success("News deleted!");
+      await axios.delete(`http://localhost:5000/api/services/${id}`);
+      setServicesList(servicesList.filter((item) => item._id !== id));
+      toast.success("Service deleted!");
     } catch (err) {
       console.error("Delete error", err);
       toast.error("Delete failed");
@@ -105,13 +105,12 @@ const AddNewsPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-green-50 to-white">
       <Toaster position="top-center" />
-     
 
       <main className="max-w-6xl mx-auto px-4 py-12 flex-grow">
-        <h1 className="text-4xl font-bold mb-12 text-center text-indigo-700">
-          📰 {editingId ? "Edit News" : "Add News"}
+        <h1 className="text-4xl font-bold mb-12 text-center text-green-700">
+          🏥 {editingId ? "Edit Service" : "Add Service"}
         </h1>
 
         <form
@@ -124,16 +123,16 @@ const AddNewsPage = () => {
               placeholder="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
 
             <input
               type="text"
-              placeholder="Author"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Link"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
 
@@ -149,14 +148,17 @@ const AddNewsPage = () => {
               placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="p-4 border border-gray-300 rounded-lg col-span-1 md:col-span-2 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-4 border border-gray-300 rounded-lg col-span-1 md:col-span-2 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
           </div>
 
           <div className="flex flex-wrap gap-4 pt-4">
-            <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
-              {editingId ? "Update News" : "Submit News"}
+            <Button
+              type="submit"
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg"
+            >
+              {editingId ? "Update Service" : "Submit Service"}
             </Button>
             {editingId && (
               <Button
@@ -171,11 +173,11 @@ const AddNewsPage = () => {
         </form>
 
         <h2 className="text-3xl font-semibold mb-8 text-gray-800 text-center">
-          📢 Latest News
+          💼 Services List
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {newsList.map((item) => (
+          {servicesList.map((item) => (
             <div
               key={item._id}
               className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden"
@@ -187,12 +189,16 @@ const AddNewsPage = () => {
               />
               <div className="p-5">
                 <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
-                <p className="text-sm text-gray-500 mb-1">By {item.author}</p>
+                <p className="text-sm text-blue-600 mb-1 underline">
+                  <a href={item.link} target="_blank" rel="noopener noreferrer">
+                    {item.link}
+                  </a>
+                </p>
                 <p className="text-sm text-gray-700 line-clamp-3">{item.description}</p>
                 <div className="flex justify-between mt-4">
                   <Button
                     onClick={() => handleEdit(item)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm"
                   >
                     Edit
                   </Button>
@@ -208,10 +214,8 @@ const AddNewsPage = () => {
           ))}
         </div>
       </main>
-
-    
     </div>
   );
 };
 
-export default AddNewsPage;
+export default AddServicesPage;

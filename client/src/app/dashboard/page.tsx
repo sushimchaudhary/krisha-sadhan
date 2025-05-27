@@ -35,9 +35,10 @@ export default function Dashboard() {
   const [username, setUsername] = useState("Admin");
   const [showUserModal, setShowUserModal] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
-  const [file, setFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
-  const fileInputRef = useRef(null);
+const fileInputRef = useRef<HTMLInputElement | null>(null);
+const [file, setFile] = useState<File | null>(null);
+const [imageUrl, setImageUrl] = useState<string>("");
+
   const router = useRouter();
   
 
@@ -141,27 +142,27 @@ export default function Dashboard() {
   };
 
 //  banner Upload
-  const handleImageUpload = async () => {
-    if (!file) {
-      toast.error("Please select an image first");
-      return;
-    }
+  // const handleImageUpload = async () => {
+  //   if (!file) {
+  //     toast.error("Please select an image first");
+  //     return;
+  //   }
 
-    const formData = new FormData();
-    formData.append("image", file);
+  //   const formData = new FormData();
+  //   formData.append("image", file);
 
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/api/image/upload",
-        formData
-      );
-      setImageUrl(res.data.imageUrl);
-      toast.success("Banner Image uploaded successfully!");
-    } catch (error) {
-      console.error("Banner Image Upload Error:", error);
-      toast.error("Failed to upload image.");
-    }
-  };
+  //   try {
+  //     const res = await axios.post(
+  //       "http://localhost:5000/api/image/upload",
+  //       formData
+  //     );
+  //     setImageUrl(res.data.imageUrl);
+  //     toast.success("Banner Image uploaded successfully!");
+  //   } catch (error) {
+  //     console.error("Banner Image Upload Error:", error);
+  //     toast.error("Failed to upload image.");
+  //   }
+  // };
 
 
  
@@ -205,6 +206,13 @@ export default function Dashboard() {
                 className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-200 transition-all"
               >
                  sliderImages
+              </Link>
+
+              <Link
+                href="/auth/admin/addServices"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-200 transition-all"
+              >
+                 Services
               </Link>
               <Link
                 href="/auth/homeBanner"
@@ -257,10 +265,10 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
+{/* 
+          Upload home banner  */}
 
-          {/* Upload home banner  */}
-
-          <div className="mt-8 bg-white p-4 rounded shadow-md">
+          {/* <div className="mt-8 bg-white p-4 rounded shadow-md">
             <Toaster position="top-right" />
             <div className="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4 text-gray-800">
@@ -296,7 +304,7 @@ export default function Dashboard() {
                 />
               </div>
             )}
-          </div>
+          </div> */}
 
          
         </main>
