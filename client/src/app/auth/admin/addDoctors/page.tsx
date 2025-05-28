@@ -134,6 +134,8 @@ const DoctorPage = () => {
     setExperience(doctor.experience);
     setBio(doctor.bio);
     setImage(null);
+      // Scroll to the top smoothly
+  window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

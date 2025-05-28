@@ -70,7 +70,7 @@ export default function Dashboard() {
                 📊 Dashboard
               </Link>
               <Link
-                href="/Docter"
+                href="/Doctor"
                 className="flex items-center gap-2 px-3 py-2 text-black text-decoration-none rounded-lg hover:bg-blue-200 transition-all duration-200"
               >
                 🩺 Doctors

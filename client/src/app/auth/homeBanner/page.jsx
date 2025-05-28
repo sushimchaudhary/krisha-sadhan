@@ -186,7 +186,7 @@ const HomeBanner = () => {
 
     try {
       const res = await axios.post('http://localhost:5000/api/image/upload', formData);
-      toast.success('Media uploaded successfully!');
+      toast.success(' uploaded successfully!');
       setFile(null);
       if (fileInputRef.current) fileInputRef.current.value = null;
       fetchBanners();

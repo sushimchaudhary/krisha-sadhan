@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { HomeIcon } from 'lucide-react';
+// import Cookies from "js-cookie";
 
 const AdminRegisterPage: React.FC = () => {
   const router = useRouter();
@@ -23,6 +24,15 @@ const AdminRegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+
+    // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    toast.error('Please enter a valid email address');
+    setLoading(false);
+    return;
+  }
 
     if (!isStrongPassword(password)) {
       toast.error('Password must be 8+ chars with uppercase, lowercase, number, and symbol');
@@ -46,6 +56,60 @@ const AdminRegisterPage: React.FC = () => {
       setLoading(false);
     }
   };
+ 
+
+
+
+
+// useEffect(() => {
+//   const fetchUser = async () => {
+//     try {
+//       const res = await axios.get('http://localhost:5000/api/auth/me', {
+//         withCredentials: true, // if using cookie-based auth
+//       });
+
+//       if (res.data.role !== 'admin') {
+//         router.replace('/not-authorized');
+//       }
+//     } catch (error) {
+//       router.replace('/not-authorized');
+//     }
+//   };
+
+//   fetchUser();
+// }, []);
+
+
+
+
+  // useEffect(() => {
+  //   const verifyAdmin = async () => {
+  //     const token = Cookies.get("adminToken");
+  //     if (!token) {
+  //       router.push("/not-authorized");
+  //       return;
+  //     }
+
+  //     try {
+  //       const decoded = jwtDecode<TokenPayload>(token);
+
+  //       if (decoded.role !== "admin") {
+  //         router.push("/not-authorized");
+  //       }
+  //     } catch (err) {
+  //       router.push("/not-authorized");
+  //     }
+  //   };
+
+  //   verifyAdmin();
+  // }, [router]);
+
+
+
+
+
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center px-4">

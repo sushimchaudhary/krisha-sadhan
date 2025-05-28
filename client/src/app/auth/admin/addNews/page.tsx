@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -21,6 +21,7 @@ const AddNewsPage = () => {
   const [image, setImage] = useState<File | null>(null);
   const [newsList, setNewsList] = useState<News[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null); // form ref
 
   useEffect(() => {
     fetchNews();
@@ -86,12 +87,16 @@ const AddNewsPage = () => {
   };
 
   const handleEdit = (item: News) => {
-    setTitle(item.title);
-    setDescription(item.description);
-    setAuthor(item.author);
-    setEditingId(item._id);
-    setImage(null);
-  };
+  setTitle(item.title);
+  setDescription(item.description);
+  setAuthor(item.author);
+  setEditingId(item._id);
+  setImage(null);
+
+  // Scroll to the top smoothly when editing
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
 
   const handleDelete = async (id: string) => {
     try {
@@ -107,7 +112,6 @@ const AddNewsPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
       <Toaster position="top-center" />
-     
 
       <main className="max-w-6xl mx-auto px-4 py-12 flex-grow">
         <h1 className="text-4xl font-bold mb-12 text-center text-indigo-700">
@@ -115,6 +119,7 @@ const AddNewsPage = () => {
         </h1>
 
         <form
+          ref={formRef}
           onSubmit={handleSubmit}
           className="bg-white rounded-2xl shadow-lg p-10 space-y-6 mb-16"
         >
@@ -155,7 +160,10 @@ const AddNewsPage = () => {
           </div>
 
           <div className="flex flex-wrap gap-4 pt-4">
-            <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+            <Button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
+            >
               {editingId ? "Update News" : "Submit News"}
             </Button>
             {editingId && (
@@ -208,8 +216,6 @@ const AddNewsPage = () => {
           ))}
         </div>
       </main>
-
-    
     </div>
   );
 };

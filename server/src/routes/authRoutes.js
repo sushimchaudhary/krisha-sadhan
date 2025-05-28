@@ -1,6 +1,7 @@
 import express from 'express';
 import { registerAdmin, loginAdmin, logoutAdmin, getAdminById, getUserById, getAllUsers, deleteUserByEmail, updateUserByEmail, login, logout } from '../controllers/authController.js';
 import { authenticateToken } from '../middlewares/authMiddleware.js';
+// import { protectSuperAdmin } from '../middlewares/protectSuperAdmin.js';
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.delete("/users/:email", deleteUserByEmail);
 router.put("/users/:email", updateUserByEmail);
 router.post('/login', login);
 router.post('/logout', authenticateToken, logout)
+
 // In authRoutes.js or similar
 
 router.get('/users', async (req, res) => {

@@ -10,10 +10,7 @@ const serviceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    link: {
-      type: String,
-      required: true,
-    },
+    
     image: {
       type: String,
       required: true, // Path to uploaded image

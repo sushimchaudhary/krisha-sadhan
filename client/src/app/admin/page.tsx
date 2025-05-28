@@ -1,6 +1,6 @@
 "use client";
 
-import AdminForm from "@/component/AdminForm";
+import AdminForm from "@/component/AdminForm.js";
 
 
 export default function AdminPage() {

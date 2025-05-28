@@ -17,6 +17,7 @@ import imageRoutes from './routes/imageRoutes.js';
 import aboutSliderRoutes from './routes/aboutSliderRoutes.js';
 import serviceRoutes from './routes/serviceRoutes.js';
 
+
 dotenv.config(); // Load .env
 
 dbConnect();
@@ -37,6 +38,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use("/uploads", express.static(path.join("public/uploads")));
 
 // Routes
+
+// app.get('/api/superadmin/dashboard', protectSuperAdmin, authRoutes); // protected route
+
+
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/admin', adminRoutes);

@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-
 import { Button } from "@/components/ui/button";
 
 interface Service {
@@ -11,16 +10,15 @@ interface Service {
   image: string;
   title: string;
   description: string;
-  link: string;
 }
 
 const AddServicesPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [link, setLink] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [servicesList, setServicesList] = useState<Service[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     fetchServices();
@@ -44,7 +42,6 @@ const AddServicesPage = () => {
   const resetForm = () => {
     setTitle("");
     setDescription("");
-    setLink("");
     setImage(null);
     setEditingId(null);
   };
@@ -57,7 +54,6 @@ const AddServicesPage = () => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
-      formData.append("link", link);
       if (image) formData.append("image", image);
 
       if (editingId) {
@@ -71,9 +67,11 @@ const AddServicesPage = () => {
         );
         toast.success("Service updated!");
       } else {
-        const res = await axios.post("http://localhost:5000/api/services", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const res = await axios.post(
+          "http://localhost:5000/api/services",
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
         setServicesList((prev) => [...prev, res.data]);
         toast.success("Service added!");
       }
@@ -88,9 +86,10 @@ const AddServicesPage = () => {
   const handleEdit = (item: Service) => {
     setTitle(item.title);
     setDescription(item.description);
-    setLink(item.link);
     setEditingId(item._id);
     setImage(null);
+  // Scroll to the top smoothly when editing
+  window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id: string) => {
@@ -114,6 +113,7 @@ const AddServicesPage = () => {
         </h1>
 
         <form
+          ref={formRef}
           onSubmit={handleSubmit}
           className="bg-white rounded-2xl shadow-lg p-10 space-y-6 mb-16"
         >
@@ -123,15 +123,6 @@ const AddServicesPage = () => {
               placeholder="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-              required
-            />
-
-            <input
-              type="text"
-              placeholder="Link"
-              value={link}
-              onChange={(e) => setLink(e.target.value)}
               className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
@@ -189,11 +180,6 @@ const AddServicesPage = () => {
               />
               <div className="p-5">
                 <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
-                <p className="text-sm text-blue-600 mb-1 underline">
-                  <a href={item.link} target="_blank" rel="noopener noreferrer">
-                    {item.link}
-                  </a>
-                </p>
                 <p className="text-sm text-gray-700 line-clamp-3">{item.description}</p>
                 <div className="flex justify-between mt-4">
                   <Button

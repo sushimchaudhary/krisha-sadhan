@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface Service {
   _id: string;
@@ -15,9 +14,7 @@ interface Service {
 }
 
 const AddServicesPage = () => {
-  
   const [servicesList, setServicesList] = useState<Service[]>([]);
- 
 
   useEffect(() => {
     fetchServices();
@@ -33,45 +30,41 @@ const AddServicesPage = () => {
     }
   };
 
-  
- 
-
-  
- 
-
- 
 
   return (
-   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-  {servicesList.map((item) => (
-    <div
-      key={item._id}
-      className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden"
-    >
-      <img
-        src={`http://localhost:5000${item.image}`}
-        alt={item.title}
-        className="w-full h-48 object-cover"
-      />
-      <div className="p-5 flex flex-col justify-between h-full">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
-          <p className="text-sm text-gray-700 mt-2 line-clamp-3">{item.description}</p>
-        </div>
+    <div className="bg-dark min-h-screen bg-gray-100 p-6">
+      <Toaster position="top-right" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {servicesList.map((item) => (
+          <div
+            key={item._id}
+            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden"
+          >
+            <img
+              src={`http://localhost:5000${item.image}`}
+              alt={item.title}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-5 flex flex-col justify-between h-full">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
+                <p className="text-sm text-gray-700 mt-2 line-clamp-3">
+                  {item.description}
+                </p>
+                 <Link
+                href={`/Services/${item._id}`}> 
+              <button className="py-1 px-2 bg-primary text-white font-bold rounded">Learn more</button>
+                
+              </Link>
+              
+              </div>
 
-        <a
-          href={item.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 inline-block text-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm"
-        >
-          Learn More
-        </a>
+             
+            </div>
+          </div>
+        ))}
       </div>
     </div>
-  ))}
-</div>
-
   );
 };
 
