@@ -1,57 +1,3 @@
-// import express from 'express';
-// import multer from 'multer';
-// import path from 'path';
-// import { uploadImage, getAllImages, deleteImage } from '../controllers/imageController.js';
-
-// const router = express.Router();
-
-// // Multer config
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'public/uploads/');
-//   },
-//   filename: (req, file, cb) => {
-//     const ext = path.extname(file.originalname);
-//     cb(null, `${Date.now()}${ext}`);
-//   },
-// });
-
-// const upload = multer({ storage });
-
-// // Routes
-// router.post('/upload', upload.single('image'), uploadImage);
-// router.get('/', getAllImages);
-// router.delete('/:id', deleteImage);
-
-// export default router;
-
-
-// import express from 'express';
-// import multer from 'multer';
-// import path from 'path';
-// import { uploadImage, getAllImages, deleteImage } from '../controllers/imageController.js';
-
-// const router = express.Router();
-
-// // Multer config
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'public/uploads/');
-//   },
-//   filename: (req, file, cb) => {
-//     const ext = path.extname(file.originalname);
-//     cb(null, `${Date.now()}${ext}`);
-//   },
-// });
-
-// const upload = multer({ storage });
-
-// // Routes
-// router.post('/upload', upload.single('image'), uploadImage);
-// router.get('/', getAllImages);
-// router.delete('/:id', deleteImage);
-
-// export default router;
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
@@ -67,7 +13,7 @@ const router = express.Router();
 // Multer configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/uploads/');
+    cb(null, 'public/uploads/'); // Save media to public/uploads
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
@@ -75,13 +21,24 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+// File filter to accept only image/video formats
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype.startsWith('image/') ||
+    file.mimetype.startsWith('video/')
+  ) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only images and videos are allowed'), false);
+  }
+};
+
+const upload = multer({ storage, fileFilter });
 
 // Routes
-router.post('/upload', upload.single('image'), uploadImage);
+router.post('/upload', upload.single('media'), uploadImage);
 router.get('/all', getAllImages);
 router.get('/latest', getLatestImage);
 router.delete('/:id', deleteImage);
 
 export default router;
-

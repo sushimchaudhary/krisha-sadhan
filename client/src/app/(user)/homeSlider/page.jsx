@@ -1,45 +1,45 @@
-'use client'
+
+
+
+'use client';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const HomeSlider = () => {
-  const [images, setImages] = useState([]);
+  const [media, setMedia] = useState([]);
   const [current, setCurrent] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchImages() {
+    async function fetchMedia() {
       try {
         const res = await fetch('http://localhost:5000/api/image/all');
         const data = await res.json();
-
-        // If your backend response is { images: [...] }
-        // setImages(data.images);
-
-        // If your backend response is just an array
-        setImages(data);
+        setMedia(data); // assuming data is array of { imageUrl }
         setLoading(false);
       } catch (error) {
-        console.error('Failed to fetch images:', error);
+        console.error('Failed to fetch media:', error);
         setLoading(false);
       }
     }
 
-    fetchImages();
+    fetchMedia();
   }, []);
 
   useEffect(() => {
-    if (images.length === 0) return;
+    if (media.length === 0) return;
 
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    }, 4000); // Slide every 4 seconds
+      setCurrent((prev) => (prev === media.length - 1 ? 0 : prev + 1));
+    }, 5000); // 5 seconds
 
     return () => clearInterval(interval);
-  }, [images]);
+  }, [media]);
 
-  if (loading) return <p className="text-center py-10">Loading images...</p>;
-  if (images.length === 0) return <p className="text-center py-10">No images found</p>;
+  const isVideo = (url) => /\.(mp4|webm|ogg)$/i.test(url);
+
+  if (loading) return <p className="text-center py-10">Loading media...</p>;
+  if (media.length === 0) return <p className="text-center py-10">No media found</p>;
 
   return (
     <section
@@ -71,25 +71,53 @@ const HomeSlider = () => {
         </Link>
       </div>
 
-      {/* Background Image Slide */}
+      {/* Media Background */}
       <div
-        className="slider-image"
-        style={{
-          height: '100vh',
-          width: '100vw',
-          backgroundImage: `url(${images[current]?.imageUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          transition: 'background-image 0.8s ease-in-out',
-          filter: 'brightness(0.7)',
-        }}
-      />
+        className="slider-image position-absolute top-0 start-0 w-100 h-100"
+        style={{ zIndex: 1, overflow: 'hidden' }}
+      >
+        {isVideo(media[current]?.imageUrl) ? (
+          <video
+            src={media[current].imageUrl}
+            autoPlay
+            muted
+            loop
+            className="w-100 h-100 object-cover"
+            style={{ filter: 'brightness(0.7)', objectFit: 'cover' }}
+          />
+        ) : (
+          <div
+            style={{
+              backgroundImage: `url(${media[current].imageUrl})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              height: '100%',
+              width: '100%',
+              filter: 'brightness(0.7)',
+              transition: 'background-image 0.8s ease-in-out',
+            }}
+          />
+        )}
+      </div>
 
-      {/* Optional Navigation Arrows */}
-      <button onClick={() => setCurrent(current === 0 ? images.length - 1 : current - 1)} className="position-absolute" style={{ top: '50%', left: '20px', zIndex: 20 }}>‹</button>
-      <button onClick={() => setCurrent((current + 1) % images.length)} className="position-absolute" style={{ top: '50%', right: '20px', zIndex: 20 }}>›</button>
+      {/* Navigation */}
+      <button
+        onClick={() => setCurrent(current === 0 ? media.length - 1 : current - 1)}
+        className="position-absolute"
+        style={{ top: '50%', left: '20px', zIndex: 20 }}
+      >
+        ‹
+      </button>
+      <button
+        onClick={() => setCurrent((current + 1) % media.length)}
+        className="position-absolute"
+        style={{ top: '50%', right: '20px', zIndex: 20 }}
+      >
+        ›
+      </button>
     </section>
   );
 };
 
 export default HomeSlider;
+

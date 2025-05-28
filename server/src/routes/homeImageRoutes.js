@@ -53,6 +53,18 @@ router.get('/all', async (req, res) => {
 });
 
 
+// video uploded 
+router.post('/upload', upload.single('media'), async (req, res) => {
+  try {
+    const fileUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    const newMedia = await Media.create({ mediaUrl: fileUrl });
+    res.status(201).json(newMedia);
+  } catch (err) {
+    res.status(500).json({ error: 'Upload failed' });
+  }
+});
+
+
 
 export default router;
 

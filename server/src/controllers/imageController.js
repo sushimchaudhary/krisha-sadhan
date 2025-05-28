@@ -61,7 +61,7 @@
 
 import Image from '../models/image.js';
 
-// 📤 Upload गर्दा
+// 📤 Upload image
 export const uploadImage = async (req, res) => {
   try {
     const imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
@@ -70,41 +70,42 @@ export const uploadImage = async (req, res) => {
     res.status(200).json({ imageUrl });
   } catch (error) {
     console.error('Upload error:', error);
-    res.status(500).json({ message: 'Image upload गर्न सकिएन' });
+    res.status(500).json({ message: 'Failed to upload image or video' });
   }
 };
 
-// 🔽 सबै फोटो ल्याउने
+// 🔽 Get all images
 export const getAllImages = async (req, res) => {
   try {
     const images = await Image.find().sort({ createdAt: -1 });
     res.json(images);
   } catch (error) {
     console.error('Fetch all images error:', error);
-    res.status(500).json({ message: 'Image ल्याउन सकिएन' });
+    res.status(500).json({ message: 'Failed to fetch images' });
   }
 };
 
-// 🔝 सबैभन्दा पछिल्लो फोटो
+// 🔝 Get latest image
 export const getLatestImage = async (req, res) => {
   try {
     const image = await Image.findOne().sort({ createdAt: -1 });
-    if (!image) return res.status(404).json({ message: 'Image फेला परेन' });
+    if (!image) return res.status(404).json({ message: 'Image not found' });
     res.json({ imageUrl: image.imageUrl });
   } catch (error) {
     console.error('Fetch latest image error:', error);
-    res.status(500).json({ message: 'Image ल्याउन सकिएन' });
+    res.status(500).json({ message: 'Failed to fetch latest image' });
   }
 };
 
-// ❌ Image delete
+// ❌ Delete image
 export const deleteImage = async (req, res) => {
   try {
     const image = await Image.findByIdAndDelete(req.params.id);
-    if (!image) return res.status(404).json({ message: 'Image फेला परेन' });
-    res.json({ message: 'Image सफलतापूर्वक delete भयो' });
+    if (!image) return res.status(404).json({ message: 'Image not found' });
+    res.json({ message: 'Image deleted successfully' });
   } catch (error) {
     console.error('Delete image error:', error);
-    res.status(500).json({ message: 'Image delete गर्न सकिएन' });
+    res.status(500).json({ message: 'Failed to delete image' });
   }
 };
+
