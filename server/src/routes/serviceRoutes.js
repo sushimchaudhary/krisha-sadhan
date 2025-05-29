@@ -6,6 +6,7 @@ import {
   createService,
   updateService,
   deleteService,
+  getServiceById,
 } from '../controllers/serviceController.js';
 
 const router = express.Router();
@@ -29,5 +30,6 @@ router.get('/all', getAllServices);
 router.post('/', upload.single('image'), createService);
 router.put('/:id', upload.single('image'), updateService);
 router.delete('/:id', deleteService);
+router.get('/:id', getServiceById);
 
 export default router;
