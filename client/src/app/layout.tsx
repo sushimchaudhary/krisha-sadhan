@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: 'BistaClinic',
+  title: 'LC-kridhaSadhan',
   description: 'Admin and User Panel',
 };
 

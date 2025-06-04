@@ -72,9 +72,13 @@ const AddNewsPage = () => {
         );
         toast.success("News updated!");
       } else {
-        const res = await axios.post("http://localhost:5000/api/news", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const res = await axios.post(
+          "http://localhost:5000/api/news",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
         setNewsList((prev) => [...prev, res.data]);
         toast.success("News added!");
       }
@@ -87,16 +91,15 @@ const AddNewsPage = () => {
   };
 
   const handleEdit = (item: News) => {
-  setTitle(item.title);
-  setDescription(item.description);
-  setAuthor(item.author);
-  setEditingId(item._id);
-  setImage(null);
+    setTitle(item.title);
+    setDescription(item.description);
+    setAuthor(item.author);
+    setEditingId(item._id);
+    setImage(null);
 
-  // Scroll to the top smoothly when editing
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
+    // Scroll to the top smoothly when editing
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const handleDelete = async (id: string) => {
     try {
@@ -162,15 +165,16 @@ const AddNewsPage = () => {
           <div className="flex flex-wrap gap-4 pt-4">
             <Button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow transition"
             >
               {editingId ? "Update News" : "Submit News"}
             </Button>
+
             {editingId && (
               <Button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg"
+                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full shadow transition"
               >
                 Cancel
               </Button>
@@ -194,19 +198,23 @@ const AddNewsPage = () => {
                 className="w-full h-48 object-cover"
               />
               <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {item.title}
+                </h3>
                 <p className="text-sm text-gray-500 mb-1">By {item.author}</p>
-                <p className="text-sm text-gray-700 line-clamp-3">{item.description}</p>
-                <div className="flex justify-between mt-4">
+                <p className="text-sm text-gray-700 line-clamp-3">
+                  {item.description}
+                </p>
+                <div className="flex justify-between mt-4 ">
                   <Button
                     onClick={() => handleEdit(item)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-4xl text-sm"
                   >
                     Edit
                   </Button>
                   <button
                     onClick={() => handleDelete(item._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm"
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm"
                   >
                     Delete
                   </button>

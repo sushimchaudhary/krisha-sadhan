@@ -1,20 +1,58 @@
-// models/appointmentModel.js
+import mongoose from "mongoose";
 
-import mongoose from 'mongoose';
+const appointmentSchema = new mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    preferredDate: {
+      type: String, // or Date if you want to store actual Date objects
+      required: true,
+    },
+    preferredTime: {
+      type: String, // e.g. "08:00", "13:00"
+      required: true,
+    },
+    message: {
+      type: String,
+      default: "",
+    },
+    maxGroup: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 7,
+    },
+    userLocation: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    tourLocation: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-const appointmentSchema = new mongoose.Schema({
-  fullName: String,
-  email: String,
-  phone: String,
-  preferredDate: String,
-  preferredTime: String,   // store as 'HH:mm'
-  department: String,
-  message: String,
-  status: {
-    type: String,
-    enum: ['pending', 'done', 'Cancelled'],
-    default: 'pending'
+  },
+  {
+    timestamps: true,
   }
-}, { timestamps: true });
+);
 
-export default mongoose.model('Appointment', appointmentSchema);
+const Appointment = mongoose.models.Appointment || mongoose.model("Appointment", appointmentSchema);
+
+export default Appointment;

@@ -45,7 +45,7 @@ app.use("/uploads", express.static(path.join("public/uploads")));
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/doctors', doctorRoutes);
+app.use("/api/doctors", doctorRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/image', imageRoutes); // Home page image upload
 app.use('/api/about-sliders', aboutSliderRoutes); // About page slider image

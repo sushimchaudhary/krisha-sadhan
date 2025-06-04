@@ -3,41 +3,31 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-
-
 import { Button } from "@/components/ui/button";
-
 
 interface Doctor {
   _id: string;
-  name: string;
-  specialization: string;
-  education: string[];
-  experience: string;
-  bio: string;
+  title: string;
+  description: string;
+  // location: string;
+  duration: string;
+  price: number;
   image: string;
+  education: string[];
+
 }
 
-const specializations = [
-  "Cardiologist",
-  "Dermatologist",
-  "Neurologist",
-  "Pediatrician",
-  "Orthopedic",
-  "Psychiatrist",
-  "Dentist",
-  "ENT Specialist",
-];
-
 const DoctorPage = () => {
-  const [name, setName] = useState("");
-  const [specialization, setSpecialization] = useState("");
-  const [education, setEducation] = useState<string[]>([]);
-  const [newEducation, setNewEducation] = useState("");
-  const [experience, setExperience] = useState("");
-  const [bio, setBio] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  // const [location, setLocation] = useState("");
+  const [duration, setDuration] = useState("");
+  const [price, setPrice] = useState<number>(0);
   const [image, setImage] = useState<File | null>(null);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [education, setEducation] = useState<string[]>([]);
+  const [newEducation, setNewEducation] = useState("");
+  // const [maxPeople, setMaxPeople] = useState<number>(1);
   const [editingDoctorId, setEditingDoctorId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -50,7 +40,7 @@ const DoctorPage = () => {
       setDoctors(res.data);
     } catch (err) {
       console.error("Failed to fetch doctors", err);
-      toast.error("Could not fetch doctor list");
+      toast.error("Could not fetch tour list");
     }
   };
 
@@ -67,27 +57,30 @@ const DoctorPage = () => {
   };
 
   const resetForm = () => {
-    setName("");
-    setSpecialization("");
-    setExperience("");
-    setBio("");
+    setTitle("");
+    setDescription("");
+    // setLocation("");
+    setDuration("");
+    setPrice(0);
     setEducation([]);
-    setNewEducation("");
     setImage(null);
+    setNewEducation("");
     setEditingDoctorId(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!image && !editingDoctorId) return toast.error("Please upload an image.");
+    if (!image && !editingDoctorId)
+      return toast.error("Please upload an image.");
 
     try {
       const formData = new FormData();
-      formData.append("name", name);
-      formData.append("specialization", specialization);
-      formData.append("experience", experience);
-      formData.append("bio", bio);
-      formData.append("education", education.join(","));
+      formData.append("title", title);
+      formData.append("description", description);
+      // formData.append("location", location);
+      formData.append("duration", duration);
+      formData.append("price", price.toString());
+      education.forEach((edu) => formData.append("education", edu));
       if (image) formData.append("imageFile", image);
 
       if (editingDoctorId) {
@@ -99,19 +92,23 @@ const DoctorPage = () => {
         setDoctors((prev) =>
           prev.map((doc) => (doc._id === editingDoctorId ? res.data : doc))
         );
-        toast.success("Doctor updated successfully!");
+        toast.success("Tour updated successfully!");
       } else {
-        const res = await axios.post("http://localhost:5000/api/doctors", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const res = await axios.post(
+          "http://localhost:5000/api/doctors",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
         setDoctors((prev) => [...prev, res.data]);
-        toast.success("Doctor added successfully!");
+        toast.success("Tour added successfully!");
       }
 
       resetForm();
     } catch (err) {
       console.error("Error submitting form", err);
-      toast.error("Failed to submit doctor");
+      toast.error("Failed to submit tour");
     }
   };
 
@@ -119,33 +116,31 @@ const DoctorPage = () => {
     try {
       await axios.delete(`http://localhost:5000/api/doctors/${id}`);
       setDoctors(doctors.filter((doc) => doc._id !== id));
-      toast.success("Doctor deleted successfully!");
+      toast.success("Tour deleted successfully!");
     } catch (err) {
-      console.error("Failed to delete doctor", err);
+      console.error("Failed to delete tour", err);
       toast.error("Delete failed");
     }
   };
 
   const handleEdit = (doctor: Doctor) => {
     setEditingDoctorId(doctor._id);
-    setName(doctor.name);
-    setSpecialization(doctor.specialization);
+    setTitle(doctor.title);
+    setDescription(doctor.description);
+    // setLocation(doctor.location);
+    setDuration(doctor.duration);
+    setPrice(doctor.price);
     setEducation(doctor.education);
-    setExperience(doctor.experience);
-    setBio(doctor.bio);
     setImage(null);
-      // Scroll to the top smoothly
-  window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white ">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
       <Toaster position="top-center" />
-   
-
       <main className="max-w-7xl mx-auto px-4 py-10 flex-grow">
         <h1 className="text-4xl font-bold mb-10 text-center text-blue-800">
-          👩‍⚕️ {editingDoctorId ? "Edit Doctor" : "Add New Doctor"}
+          {editingDoctorId ? "Edit Tour" : "Add New Tour"}
         </h1>
 
         <form
@@ -154,35 +149,44 @@ const DoctorPage = () => {
         >
           <input
             type="text"
-            placeholder="Doctor Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="Tour Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
-
-          <select
-            value={specialization}
-            onChange={(e) => setSpecialization(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          >
-            <option value="">Select Specialization</option>
-            {specializations.map((spec) => (
-              <option key={spec} value={spec}>
-                {spec}
-              </option>
-            ))}
-          </select>
 
           <input
             type="text"
-            placeholder="Experience (e.g., 5 years)"
-            value={experience}
-            onChange={(e) => setExperience(e.target.value)}
+            placeholder="Duration (e.g., 3 days)"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
             className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Price (in NPR)
+            </label>
+            <input
+              type="number"
+              placeholder="Enter price"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out"
+              required
+            />
+          </div>
+
+          {/* <input
+            type="text"
+            placeholder="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          /> */}
+
           <input
             type="file"
             accept="image/*"
@@ -192,21 +196,21 @@ const DoctorPage = () => {
           />
 
           <textarea
-            placeholder="Short Bio"
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg col-span-1 md:col-span-2 h-28 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 col-span-1 md:col-span-2"
             required
           />
 
           <div className="col-span-1 md:col-span-2">
             <label className="block font-semibold mb-2 text-gray-700">
-              Education
+              Offer / Highlights
             </label>
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder="Enter education qualification"
+                placeholder="Enter offer"
                 value={newEducation}
                 onChange={(e) => setNewEducation(e.target.value)}
                 className="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -214,12 +218,11 @@ const DoctorPage = () => {
               <Button
                 type="button"
                 onClick={handleAddEducation}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg transition"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg"
               >
                 Add
               </Button>
             </div>
-
             <div className="flex flex-wrap gap-2 mt-3">
               {education.map((edu, index) => (
                 <span
@@ -235,15 +238,15 @@ const DoctorPage = () => {
           <div className="flex gap-4 col-span-1 md:col-span-2">
             <Button
               type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-semibold transition"
+              className="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-semibold"
             >
-              {editingDoctorId ? "Update Doctor" : "Submit Doctor"}
+              {editingDoctorId ? "Update Tour" : "Submit Tour"}
             </Button>
             {editingDoctorId && (
               <Button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-500 hover:bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold transition"
+                className="bg-gray-500 hover:bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold"
               >
                 Cancel
               </Button>
@@ -251,7 +254,9 @@ const DoctorPage = () => {
           </div>
         </form>
 
-        <h2 className="text-3xl font-semibold mb-6 text-gray-800">📋 Doctors List</h2>
+        <h2 className="text-3xl font-semibold mb-6 text-gray-800">
+          📋 Tour List
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {doctors.map((doc) => (
             <div
@@ -260,20 +265,28 @@ const DoctorPage = () => {
             >
               <img
                 src={`http://localhost:5000${doc.image}`}
-                alt={doc.name}
-                className="img-fluid doctor-img"
+                alt={doc.title}
+                className="w-full h-48 object-cover"
               />
               <div className="p-4 flex flex-col flex-grow">
-                <h3 className="text-xl font-semibold text-gray-900">{doc.name}</h3>
-                <span className="text-blue-600 font-medium">{doc.specialization}</span>
-                <span className="text-sm text-gray-500">{doc.experience}</span>
-                <p className="text-sm text-gray-700 mt-1 line-clamp-3">{doc.bio}</p>
+                <h3 className="text-xl font-semibold text-gray-900">
+                  {doc.title}
+                </h3>
+                {/* <span className="text-blue-600 font-medium">
+                  {doc.location}
+                </span> */}
+                <span className="text-sm text-gray-500">{doc.duration}</span>
+                  <p className="text-green-600 font-bold mt-1">NPR {doc.price}</p>
 
-                <div className="gap-2 ">
+                <p className="text-sm text-gray-700 mt-1 line-clamp-3">
+                  {doc.description}
+                </p>
+              
+                <div className="gap-2 mt-2">
                   {doc.education.map((edu, index) => (
                     <div
                       key={`edu-${doc._id}-${index}`}
-                      className="text-red-500 text-xs "
+                      className="text-red-500 text-xs"
                     >
                       {edu}
                     </div>
@@ -299,8 +312,6 @@ const DoctorPage = () => {
           ))}
         </div>
       </main>
-
-      
     </div>
   );
 };

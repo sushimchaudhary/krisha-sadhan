@@ -18,10 +18,13 @@ const AdminLoginPage: React.FC = () => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
       // ✅ Optionally check for admin role
       // if (data.admin.role !== "admin") {
@@ -33,9 +36,12 @@ const AdminLoginPage: React.FC = () => {
       Cookies.set("adminToken", data.token);
       localStorage.setItem("adminToken", data.token);
       // localStorage.setItem("admin", JSON.stringify(data.admin));
-      localStorage.setItem('user',JSON.stringify({
-         username: data.username, 
-         role: data.role })
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username: data.username,
+          role: data.role,
+        })
       );
 
       toast.success("Login successful! Redirecting...");
@@ -52,7 +58,9 @@ const AdminLoginPage: React.FC = () => {
       <Toaster position="top-right" />
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl border border-blue-100">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-700">Hospital Admin Panel</h1>
+          <h1 className="text-3xl font-bold text-blue-700 flex pl-14">
+            𝕶𝖗𝖎𝖘𝖍𝖆 <p className="text-red-500">𝕾𝖆𝖉𝖍𝖆𝖓</p>{" "}
+          </h1>
           <p className="text-sm text-gray-500 mt-1">Please login to continue</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -87,9 +95,35 @@ const AdminLoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 transition text-white font-medium py-2 rounded-lg"
+            className={`w-full bg-red-500 hover:bg-red-600 transition text-white font-medium py-2 rounded-lg flex justify-center items-center gap-2`}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? (
+              <>
+                <svg
+                  className="w-5 h-5 animate-spin"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  ></path>
+                </svg>
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
 

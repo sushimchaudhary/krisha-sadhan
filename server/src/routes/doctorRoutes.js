@@ -1,35 +1,29 @@
-import express from 'express';
-import multer from 'multer';
-import { getDoctors, addDoctor, updateDoctor, deleteDoctor, getDoctorById } from '../controllers/doctorController.js';
-// import Doctor from '../models/doctorModel.js';
+import express from "express";
+import {
+  createDoctor,
+  getAllDoctors,
+  getDoctorById,
+  updateDoctor,
+  deleteDoctor,
+} from "../controllers/doctorController.js";
+
+import upload from "../middlewares/upload.js";
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  },
-});
-const upload = multer({ storage });
+// Get all doctors
+router.get("/", getAllDoctors);
 
-router.get('/', getDoctors);
-router.post('/', upload.single('imageFile'), addDoctor);
-router.delete("/:id", deleteDoctor);
+// Get one doctor by id
+router.get("/:id", getDoctorById);
+
+// Create new doctor with image upload - expect field name "imageFile"
+router.post("/", upload.single("imageFile"), createDoctor);
+
+// Update doctor by id, optional image upload
 router.put("/:id", upload.single("imageFile"), updateDoctor);
-router.get('/:id', getDoctorById);
 
-// // Correct route for fetching doctor by id:
-// router.get("/doctors/:id", async (req, res) => {
-//   try {
-//     const doctor = await Doctor.findById(req.params.id);
-//     if (!doctor) return res.status(404).json({ message: "Doctor not found" });
-//     res.json(doctor);
-//   } catch (err) {
-//     res.status(500).json({ message: "Server error" });
-//   }
-// });
+// Delete doctor by id
+router.delete("/:id", deleteDoctor);
 
 export default router;

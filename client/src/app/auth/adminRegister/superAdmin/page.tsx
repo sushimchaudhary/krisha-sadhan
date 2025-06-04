@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import toast, { Toaster } from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { HomeIcon } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { HomeIcon } from "lucide-react";
 // import Cookies from "js-cookie";
 
 const AdminRegisterPage: React.FC = () => {
   const router = useRouter();
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('admin'); // default role
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("admin"); // default role
   const [loading, setLoading] = useState(false);
 
   const isStrongPassword = (password: string) => {
@@ -25,62 +25,56 @@ const AdminRegisterPage: React.FC = () => {
     e.preventDefault();
     setLoading(true);
 
-
     // Validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    toast.error('Please enter a valid email address');
-    setLoading(false);
-    return;
-  }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
 
     if (!isStrongPassword(password)) {
-      toast.error('Password must be 8+ chars with uppercase, lowercase, number, and symbol');
+      toast.error(
+        "Password must be 8+ chars with uppercase, lowercase, number, and symbol"
+      );
       setLoading(false);
       return;
     }
 
     try {
-      await axios.post('http://localhost:5000/api/auth/register', {
+      await axios.post("http://localhost:5000/api/auth/register", {
         username,
         email,
         password,
         role,
       });
 
-      toast.success('Registration successful! Please login.');
-      setTimeout(() => router.push('/auth/adminLogin'), 1500);
+      toast.success("Registration successful! Please login.");
+      setTimeout(() => router.push("/auth/adminLogin"), 1500);
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Registration failed!');
+      toast.error(error.response?.data?.message || "Registration failed!");
     } finally {
       setLoading(false);
     }
   };
- 
 
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const res = await axios.get('http://localhost:5000/api/auth/me', {
+  //         withCredentials: true, // if using cookie-based auth
+  //       });
 
+  //       if (res.data.role !== 'admin') {
+  //         router.replace('/not-authorized');
+  //       }
+  //     } catch (error) {
+  //       router.replace('/not-authorized');
+  //     }
+  //   };
 
-
-// useEffect(() => {
-//   const fetchUser = async () => {
-//     try {
-//       const res = await axios.get('http://localhost:5000/api/auth/me', {
-//         withCredentials: true, // if using cookie-based auth
-//       });
-
-//       if (res.data.role !== 'admin') {
-//         router.replace('/not-authorized');
-//       }
-//     } catch (error) {
-//       router.replace('/not-authorized');
-//     }
-//   };
-
-//   fetchUser();
-// }, []);
-
-
-
+  //   fetchUser();
+  // }, []);
 
   // useEffect(() => {
   //   const verifyAdmin = async () => {
@@ -104,20 +98,21 @@ const AdminRegisterPage: React.FC = () => {
   //   verifyAdmin();
   // }, [router]);
 
-
-
-
-
-
-
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center px-4">
       <Toaster position="top-right" />
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl border border-blue-100">
         <div className="flex flex-col items-center mb-6">
-          <Image src="/logo.png" alt="Hospital Logo" width={64} height={64} className="mb-3" />
-          <h1 className="text-3xl font-bold text-blue-700">Admin Registration</h1>
+          <Image
+            src="/logo.jpg"
+            alt="Hospital Logo"
+            width={150}
+            height={150}
+            className="mb-3"
+          />
+          <h1 className="text-3xl font-bold text-blue-700">
+            Admin Registration
+          </h1>
           <p className="text-sm text-gray-500 mt-1 text-center">
             Create your account to manage the system
           </p>
@@ -125,7 +120,9 @@ const AdminRegisterPage: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Username
+            </label>
             <input
               type="text"
               placeholder="admin123"
@@ -137,7 +134,9 @@ const AdminRegisterPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
             <input
               type="email"
               placeholder="admin@example.com"
@@ -149,7 +148,9 @@ const AdminRegisterPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
             <input
               type="password"
               placeholder="********"
@@ -161,7 +162,9 @@ const AdminRegisterPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Role
+            </label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
@@ -169,7 +172,7 @@ const AdminRegisterPage: React.FC = () => {
               required
             >
               <option value="admin">Admin</option>
-             
+
               <option value="user">User</option>
             </select>
           </div>
@@ -177,21 +180,53 @@ const AdminRegisterPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 transition text-white font-medium py-2 rounded-lg"
+            className={`w-full bg-red-500 hover:bg-red-600 transition text-white font-medium py-2 rounded-lg flex justify-center items-center gap-2`}
           >
-            {loading ? 'Registering...' : 'Register'}
+            {loading ? (
+              <>
+                <svg
+                  className="w-5 h-5 animate-spin"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  ></path>
+                </svg>
+                Register...
+              </>
+            ) : (
+              "Register"
+            )}
           </button>
         </form>
 
         <p className="mt-5 text-center text-sm text-gray-600">
-          Already have an account?{' '}
-          <Link href="/auth/adminLogin" className="text-blue-600 font-medium hover:underline">
+          Already have an account?{" "}
+          <Link
+            href="/auth/adminLogin"
+            className="text-blue-600 font-medium hover:underline"
+          >
             Login here
           </Link>
         </p>
         <p className="mt-2 text-center text-sm text-gray-600 flex justify-center items-center gap-1">
-          Or go to{' '}
-          <Link href="/dashboard" className="text-blue-600 font-medium hover:underline flex items-center gap-1">
+          Or go to{" "}
+          <Link
+            href="/dashboard"
+            className="text-red-500 font-medium hover:underline flex items-center gap-1"
+          >
             <HomeIcon className="h-5 w-5" />
             Dashboard
           </Link>
@@ -202,9 +237,6 @@ const AdminRegisterPage: React.FC = () => {
 };
 
 export default AdminRegisterPage;
-
-
-
 
 // 'use client';
 

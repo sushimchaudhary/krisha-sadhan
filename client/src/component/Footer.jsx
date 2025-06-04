@@ -12,10 +12,10 @@ import {
 import { IoIosArrowUp } from "react-icons/io";
 
 const footerData = {
-  clinic: {
-    name: "BISTA POLYCLINIC",
+  lc: {
+    name: "The king of Land Cruiser",
     description:
-      "Bista Polyclinic is a premier healthcare institution committed to providing exceptional medical care with a focus on patient comfort and well-being.",
+       "The King of Land Cruiser Tours is a premier adventure experience committed to delivering exceptional travel with a focus on comfort, safety, and unforgettable exploration.",
     social: [
       { icon: <FaFacebookF />, link: "#" },
       { icon: <FaTwitter />, link: "#" },
@@ -27,23 +27,20 @@ const footerData = {
     "Home",
     "About",
     "Our Services",
-    "Our Doctors",
+    "Our Tours",
     "News & Updates",
     "Contact us",
   ],
   contact: {
-    address: "Sisahaniya, Rapti-7, Dang",
-    email: "info@bistapoliclinic.com",
+    address: "Tarakeshwar, kathmandu",
+    email: "info@landcruiser.com",
     phone: "+01 234 567 88",
-    locationCode: "RMW2+QH9, Sisahaniya 22400",
+    locationCode: "Q836+J6Q Tarakeshwar",
   },
-  hours: {
-    weekdays: "8:00 AM - 8:00 PM",
-    saturday: "Closed",
-  },
+ 
   emergency: {
     note: "Available 24/7",
-    number: "+977 1 4123457",
+    number: "+977 xxxxxxx",
   },
 };
 
@@ -65,17 +62,17 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="bg-primary text-white py-10 relative">
+      <footer className="bg-red-500 text-white py-10 relative">
         <div className="container mx-auto sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Clinic Info */}
+            {/* lc Info */}
             <div>
-              <h5 className="text-xl font-semibold mb-4">
-                {footerData.clinic.name}
+              <h5 className="text-xl font-extrabold mb-4">
+                {footerData.lc.name}
               </h5>
-              <p className="mb-4">{footerData.clinic.description}</p>
+              <p className="mb-4">{footerData.lc.description}</p>
               <div className="flex space-x-3">
-                {footerData.clinic.social.map((item, index) => (
+                {footerData.lc.social.map((item, index) => (
                   <a
                     key={index}
                     href={item.link}
@@ -120,15 +117,7 @@ const Footer = () => {
 
             {/* Opening Hours */}
             <div>
-              <h5 className="text-xl font-semibold mb-4">Opening Hours</h5>
-              <p className="flex justify-between border-b border-white/30 pb-1 mb-1">
-                <span>Sunday - Friday</span>
-                <span>{footerData.hours.weekdays}</span>
-              </p>
-              <p className="flex justify-between border-b border-white/30 pb-1 mb-4">
-                <span>Saturday</span>
-                <span>{footerData.hours.saturday}</span>
-              </p>
+              
               <h6 className="text-lg font-semibold mb-1">Emergency Services</h6>
               <p className="mb-1">{footerData.emergency.note}</p>
               <p className="text-lg font-bold">
@@ -138,7 +127,7 @@ const Footer = () => {
           </div>
 
           <div className="mt-10 text-center text-sm text-white/70">
-            &copy; {new Date().getFullYear()} {footerData.clinic.name}. All rights reserved.
+            &copy; {new Date().getFullYear()} {footerData.lc.name}. All rights reserved.
           </div>
         </div>
       </footer>
