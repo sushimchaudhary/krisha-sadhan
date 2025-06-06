@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerAdmin, loginAdmin, logoutAdmin, getAdminById, getUserById, getAllUsers, deleteUserByEmail, updateUserByEmail, login, logout } from '../controllers/authController.js';
+import { registerAdmin, loginAdmin, logoutAdmin, getAdminById, getUserById, getAllUsers, deleteUserByEmail, updateUserByEmail, login, logout, forgotPassword, resetPassword } from '../controllers/authController.js';
 import { authenticateToken } from '../middlewares/authMiddleware.js';
 // import { protectSuperAdmin } from '../middlewares/protectSuperAdmin.js';
 
@@ -15,6 +15,8 @@ router.delete("/users/:email", deleteUserByEmail);
 router.put("/users/:email", updateUserByEmail);
 router.post('/login', login);
 router.post('/logout', authenticateToken, logout)
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password/:token', resetPassword);
 
 // In authRoutes.js or similar
 

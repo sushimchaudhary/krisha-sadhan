@@ -1,5 +1,7 @@
 import Auth from '../models/authModel.js';
 import jwt from 'jsonwebtoken';
+import sendEmail from '../utils/sendEmail.js';
+import crypto from 'crypto';
 
 const generateToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: "7d" });
@@ -246,7 +248,7 @@ export const logout = async (req, res) => {
   try {
     const userId = req.user.id;
     await User.findByIdAndUpdate(userId, { active: false });
-    res.status(200).json({ message: 'Logout सफल भयो, active false गरियो' });
+    res.status(200).json({ message: 'Logout successfull, active false ' });
   } catch (error) {
     console.error('Logout error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -256,6 +258,66 @@ export const logout = async (req, res) => {
 
 
 
+
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await Auth.findOne({ email });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+    await user.save();
+
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+    const message = `You requested a password reset. Please go to: ${resetUrl}`;
+
+    await sendEmail({ email: user.email, subject: 'Password Reset', message });
+
+    // *** IMPORTANT: send resetToken also ***
+    res.status(200).json({ 
+      message: 'Password reset email sent',
+      resetToken // send this token to frontend for redirect
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
+
+
+export const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+  try {
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    const user = await Auth.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() }, // token expiry check
+    });
+
+    if (!user) return res.status(400).json({ message: 'Invalid or expired token' });
+
+    // Set new password (hashing handled by pre-save middleware in Auth model)
+    user.password = password;
+
+    // Remove reset token fields
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    return res.status(200).json({ message: 'Password changed successful' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
 // import Auth from '../models/authModel.js';
 // import jwt from 'jsonwebtoken';
 

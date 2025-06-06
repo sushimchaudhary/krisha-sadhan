@@ -1,7 +1,8 @@
 
 import express from 'express';
-import cors from 'cors';
 import dotenv from 'dotenv';
+import cors from 'cors';
+
 import cookieParser from 'cookie-parser';
 import dbConnect from './database/connection.js';
 import appointmentRoutes from './routes/appointmentRoutes.js';
