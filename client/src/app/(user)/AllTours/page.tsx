@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 interface Doctor {
   _id: string;
@@ -50,11 +49,26 @@ const DoctorPage = () => {
               className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden cursor-pointer flex flex-col"
               onClick={() => router.push(`/Tour/${doc._id}`)}
             >
-              <img
-                src={`http://localhost:5000${doc.image}`}
-                alt={doc.title}
-                className="w-full h-48 object-cover"
-              />
+              {/* Image container with relative for overlay */}
+              <div className="relative w-full h-48">
+                <img
+                  src={`http://localhost:5000${doc.image}`}
+                  alt={doc.title}
+                  className="w-full h-full object-cover"
+                />
+
+                {/* Education overlay on top-left corner */}
+                <div className="absolute top-2 right-2 bg-yellow-600 bg-opacity-90 rounded-md p-2 max-w-[90%]">
+                  {doc.education.map((edu, i) => (
+                    <div
+                      key={`edu-${doc._id}-${i}`}
+                      className="text-white text-xs font-bold leading-tight"
+                    >
+                      {edu}
+                    </div>
+                  ))}
+                </div>
+              </div>
 
               <div className="p-3 flex flex-col flex-grow">
                 <h3 className="text-xl font-semibold text-gray-900">
@@ -66,25 +80,16 @@ const DoctorPage = () => {
                   {doc.description}
                 </p>
 
-                <div className="gap-1 mb-2">
-                  {doc.education.map((edu, i) => (
-                    <div
-                      key={`edu-${doc._id}-${i}`}
-                      className="text-red-500 font-bold"
-                    >
-                      {edu}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Book Now */}
+                {/* Book Now button */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     router.push(
                       `/Appointment?title=${encodeURIComponent(
                         doc.title
-                      )}&price=${doc.price}&id=${doc._id}&location=${encodeURIComponent(doc.title)}`
+                      )}&price=${doc.price}&id=${doc._id}&location=${encodeURIComponent(
+                        doc.title
+                      )}`
                     );
                   }}
                   className="mt-2 bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 w-32 rounded font-semibold transition"

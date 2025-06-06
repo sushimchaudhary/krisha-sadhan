@@ -1,73 +1,3 @@
-// "use client";
-
-// import { useState, useEffect } from "react";
-// import axios from "axios";
-// import toast, { Toaster } from "react-hot-toast";
-// import Link from "next/link";
-
-// interface Service {
-//   _id: string;
-//   image: string;
-//   title: string;
-//   description: string;
-//   link: string;
-// }
-
-// const AddServicesPage = () => {
-//   const [servicesList, setServicesList] = useState<Service[]>([]);
-
-//   useEffect(() => {
-//     fetchServices();
-//   }, []);
-
-//   const fetchServices = async () => {
-//     try {
-//       const res = await axios.get("http://localhost:5000/api/services/all");
-//       setServicesList(res.data);
-//     } catch (err) {
-//       console.error("Fetch services error", err);
-//       toast.error("Could not load services");
-//     }
-//   };
-
-//   return (
-//     <div className=" min-h-screen bg-gray-100 p-6">
-//       <Toaster position="top-right" />
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-//         {servicesList.map((item) => (
-//           <div
-//             key={item._id}
-//             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden"
-//           >
-//             <img
-//               src={`http://localhost:5000${item.image}`}
-//               alt={item.title}
-//               className="w-full h-48 object-cover"
-//             />
-//             <div className="p-5 flex flex-col justify-between h-full">
-//               <div>
-//                 <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
-//                 <p className="text-sm text-gray-700 mt-2 line-clamp-3">
-//                   {item.description}
-//                 </p>
-//                  <Link
-//                 href={`/Services/${item._id}`}>
-//               <button className="py-1 px-2 bg-primary text-white font-bold rounded">Learn more</button>
-
-//               </Link>
-
-//               </div>
-
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AddServicesPage;
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -110,15 +40,26 @@ const ServicesPage = () => {
       <Toaster position="top-right" />
       <div className="container py-5">
         <div className="row text-center mb-4">
-          <h2 className="text-primary fw-bold">Our Services</h2>
-          <p className="text-muted">
-            We offer top-quality Land Cruiser tours designed for every explorer
-            — combining luxury, safety, and thrilling adventures to create
-            unforgettable journeys across Nepal’s most beautiful landscapes.
+          <h2 className="fw-bold">
+            Premium Land Cruiser Service & Maintenance
+          </h2>
+          <p className="text-muted py-3">
+            Keep your Land Cruiser running in peak condition with our
+            comprehensive service and maintenance solutions. Our certified
+            technicians specialize in Land Cruisers, offering everything from
+            routine checkups to complex repairs. Services include full engine
+            diagnostics, suspension tuning, AC and heater maintenance, battery
+            and chargeable system checks, and more — all using genuine parts and
+            the latest technology. We also prioritize your safety with detailed
+            inspections, brake servicing, and road-readiness testing. Whether
+            it's comfort, performance, or reliability, we ensure your vehicle
+            gets the premium care it deserves. Trust us to protect your
+            investment — with safety, power, and luxury in every detail.
           </p>
         </div>
+
         <div className="row g-4">
-          {servicesList.map((item) => (
+          {servicesList.slice(0, 3).map((item) => (
             <div key={item._id} className="col-12 col-sm-6 col-lg-4">
               <div className="card h-100 shadow-sm border-0">
                 <div style={{ height: "250px", overflow: "hidden" }}>
@@ -141,7 +82,7 @@ const ServicesPage = () => {
                       : item.description}
                   </p>
                   <button
-                    className="btn btn-success mt-3"
+                    className="mt-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white text-sm px-4 py-2 w-34 rounded font-semibold transition"
                     onClick={() => handleLearnMore(item._id)}
                   >
                     Learn More
@@ -151,6 +92,18 @@ const ServicesPage = () => {
             </div>
           ))}
         </div>
+
+        {/* View All Services Button */}
+        {servicesList.length > 3 && (
+          <div className="text-center mt-6">
+            <button
+              onClick={() => router.push("/allServices")}
+              className="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white text-sm px-6 py-2 rounded font-semibold transition"
+            >
+              View All Services
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

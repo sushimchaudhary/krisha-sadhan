@@ -14,7 +14,6 @@ interface Doctor {
   price: number;
   image: string;
   education: string[];
-
 }
 
 const DoctorPage = () => {
@@ -257,7 +256,7 @@ const DoctorPage = () => {
         <h2 className="text-3xl font-semibold mb-6 text-gray-800">
           📋 Tour List
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 h-[85%]">
           {doctors.map((doc) => (
             <div
               key={doc._id}
@@ -268,7 +267,17 @@ const DoctorPage = () => {
                 alt={doc.title}
                 className="w-full h-48 object-cover"
               />
-              <div className="p-4 flex flex-col flex-grow">
+              <div className="gap-2 mt-2">
+                  {doc.education.map((edu, index) => (
+                    <div
+                      key={`edu-${doc._id}-${index}`}
+                      className="text-red-500 font-bold"
+                    >
+                      {edu}
+                    </div>
+                  ))}
+                </div>
+              <div className="p-2 flex flex-col flex-grow">
                 <h3 className="text-xl font-semibold text-gray-900">
                   {doc.title}
                 </h3>
@@ -276,33 +285,25 @@ const DoctorPage = () => {
                   {doc.location}
                 </span> */}
                 <span className="text-sm text-gray-500">{doc.duration}</span>
-                  <p className="text-green-600 font-bold mt-1">NPR {doc.price}</p>
+                <p className="text-green-600 font-bold mt-1">NPR {doc.price}</p>
 
                 <p className="text-sm text-gray-700 mt-1 line-clamp-3">
                   {doc.description}
                 </p>
-              
-                <div className="gap-2 mt-2">
-                  {doc.education.map((edu, index) => (
-                    <div
-                      key={`edu-${doc._id}-${index}`}
-                      className="text-red-500 text-xs"
-                    >
-                      {edu}
-                    </div>
-                  ))}
-                </div>
 
-                <div className="flex justify-between items-center mt-4">
-                  <Button
+                
+
+                <div className="flex justify-between items-center mt-2">
+                  <button
                     onClick={() => handleEdit(doc)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded-lg"
+                    className="mt-1 border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-2 py-1 text-sm rounded transition"
                   >
                     Edit
-                  </Button>
+                  </button>
+
                   <button
                     onClick={() => handleDelete(doc._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded-lg"
+                    className="mt-1 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-2 py-1 text-sm rounded transition"
                   >
                     Delete
                   </button>

@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+
 import Cookies from "js-cookie";
+import Image from "next/image";
+import Link from "next/link";
 
 const AdminLoginPage: React.FC = () => {
   const router = useRouter();
@@ -54,14 +56,22 @@ const AdminLoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br to-blue-50 flex items-center justify-center px-4">
       <Toaster position="top-right" />
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl border border-blue-100">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-700 flex pl-14">
+          {/* <h1 className="text-3xl font-bold text-blue-700 flex pl-14">
             𝕶𝖗𝖎𝖘𝖍𝖆 <p className="text-red-500">𝕾𝖆𝖉𝖍𝖆𝖓</p>{" "}
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">Please login to continue</p>
+          </h1> */}
+          <Image
+            src="/logo.jpg"
+            alt="Krisha Logo"
+            width={90}
+            height={150}
+            className="mx-auto w-[90px] h-[150px]  object-contain"
+          />
+
+          <p className="text-sm text-gray-500 ">Please login to continue</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
@@ -95,7 +105,7 @@ const AdminLoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full bg-red-500 hover:bg-red-600 transition text-white font-medium py-2 rounded-lg flex justify-center items-center gap-2`}
+            className={`w-full bg-red-500 hover:bg-red-600 transition text-white font-medium py-2 rounded flex justify-center items-center gap-2`}
           >
             {loading ? (
               <>
@@ -125,9 +135,18 @@ const AdminLoginPage: React.FC = () => {
               "Login"
             )}
           </button>
+
+          <div className="w-full flex justify-end mb-4">
+            <Link
+              href="/auth/forgot-password"
+              className="text-sm text-red-500 hover:underline transition duration-200"
+            >
+              Forgot Password
+            </Link>
+          </div>
         </form>
 
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-4 text-center text-sm text-gray-600">
           <Link href="/" className="text-blue-500 font-medium hover:underline">
             ← Back to Home
           </Link>

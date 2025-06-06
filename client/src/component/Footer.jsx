@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import {
   FaFacebookF,
@@ -12,10 +12,10 @@ import {
 import { IoIosArrowUp } from "react-icons/io";
 
 const footerData = {
-  lc: {
-    name: "The king of Land Cruiser",
+  brand: {
+    name: "The King of Land Cruiser",
     description:
-       "The King of Land Cruiser Tours is a premier adventure experience committed to delivering exceptional travel with a focus on comfort, safety, and unforgettable exploration.",
+      "The King of Land Cruiser Tours delivers exceptional travel experiences focusing on comfort, safety, and unforgettable exploration.",
     social: [
       { icon: <FaFacebookF />, link: "#" },
       { icon: <FaTwitter />, link: "#" },
@@ -24,20 +24,19 @@ const footerData = {
     ],
   },
   links: [
-    "Home",
-    "About",
-    "Our Services",
-    "Our Tours",
-    "News & Updates",
-    "Contact us",
+    { label: "Home", href: "#" },
+    { label: "About", href: "About" },
+    { label: "Our Services", href: "Services" },
+    { label: "Our Tours", href: "Tour" },
+    { label: "News & Updates", href: "News" },
+    { label: "Contact Us", href: "Contact" },
   ],
   contact: {
-    address: "Tarakeshwar, kathmandu",
-    email: "info@landcruiser.com",
-    phone: "+01 234 567 88",
+    address: "Tarakeshwar, Kathmandu",
+    email: "tharurohit2002@gmail.com",
+    phone: "+0123456788",
     locationCode: "Q836+J6Q Tarakeshwar",
   },
- 
   emergency: {
     note: "Available 24/7",
     number: "+977 xxxxxxx",
@@ -48,87 +47,95 @@ const Footer = () => {
   const [showScroll, setShowScroll] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowScroll(window.scrollY > 300);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setShowScroll(window.scrollY > 300);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
     <>
-      <footer className="bg-red-500 text-white py-10 relative">
-        <div className="container mx-auto sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* lc Info */}
-            <div>
-              <h5 className="text-xl font-extrabold mb-4">
-                {footerData.lc.name}
-              </h5>
-              <p className="mb-4">{footerData.lc.description}</p>
-              <div className="flex space-x-3">
-                {footerData.lc.social.map((item, index) => (
-                  <a
-                    key={index}
-                    href={item.link}
-                    className="text-white hover:text-gray-300 text-lg"
-                  >
-                    {item.icon}
+      <footer className="bg-red-500 text-white py-12">
+        <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Brand Section */}
+          <div>
+            <h2 className="text-2xl font-bold mb-4">{footerData.brand.name}</h2>
+            <p className="mb-6 max-w-xs leading-relaxed">
+              {footerData.brand.description}
+            </p>
+            <div className="flex space-x-4 text-lg">
+              {footerData.brand.social.map(({ icon, link }, i) => (
+                <a
+                  key={i}
+                  href={link}
+                  aria-label="Social Link"
+                  className="text-white text-decoration-none"
+                >
+                  {icon}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-3">
+              {footerData.links.map(({ label, href }, i) => (
+                <li key={i}>
+                  <a href={href} className="text-white text-decoration-none">
+                    {label}
                   </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h5 className="text-xl font-semibold mb-4">Quick Links</h5>
-              <ul className="space-y-2">
-                {footerData.links.map((link, index) => (
-                  <li key={index} className="hover:underline cursor-pointer">
-                    {link}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact Info */}
-            <div>
-              <h5 className="text-xl font-semibold mb-4">Contact</h5>
-              <p className="flex items-start gap-2 mb-2">
-                <FaMapMarkerAlt className="mt-1" />
-                {footerData.contact.address}
-              </p>
-              <p className="flex items-center gap-2 mb-2">
-                <FaEnvelope /> {footerData.contact.email}
-              </p>
-              <p className="flex items-center gap-2 mb-2">
-                <FaPhoneAlt /> {footerData.contact.phone}
-              </p>
-              <p className="flex items-start gap-2">
-                <FaMapMarkerAlt className="mt-1" />
-                {footerData.contact.locationCode}
-              </p>
-            </div>
-
-            {/* Opening Hours */}
-            <div>
-              
-              <h6 className="text-lg font-semibold mb-1">Emergency Services</h6>
-              <p className="mb-1">{footerData.emergency.note}</p>
-              <p className="text-lg font-bold">
-                Call: {footerData.emergency.number}
-              </p>
-            </div>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="mt-10 text-center text-sm text-white/70">
-            &copy; {new Date().getFullYear()} {footerData.lc.name}. All rights reserved.
+          {/* Contact Info */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Contact</h3>
+            <p className="flex items-center gap-2 mb-3">
+              <FaMapMarkerAlt /> {footerData.contact.address}
+            </p>
+
+            <a
+              href={`https://mail.google.com/mail/?view=cm&fs=1&to=${footerData.contact.email}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 mb-3 text-white text-decoration-none"
+            >
+              <FaEnvelope /> {footerData.contact.email}
+            </a>
+
+            <a
+              href={`tel:${footerData.contact.phone.replace(/\s+/g, "")}`}
+              className="flex items-center gap-2 mb-3 text-white text-decoration-none "
+            >
+              <FaPhoneAlt /> {footerData.contact.phone}
+            </a>
+
+            <p className="flex items-center gap-2">
+              <FaMapMarkerAlt /> {footerData.contact.locationCode}
+            </p>
           </div>
+
+          {/* Emergency */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Emergency Services</h3>
+            <p className="mb-2">{footerData.emergency.note}</p>
+            <a
+              href={`tel:${footerData.emergency.number.replace(/\s+/g, "")}`}
+              className="text-lg font-bold text-white text-decoration-none "
+            >
+              Call: {footerData.emergency.number}
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-12 text-center text-sm text-white/70">
+          &copy; {new Date().getFullYear()} {footerData.brand.name}. All rights
+          reserved.
         </div>
       </footer>
 
@@ -136,7 +143,8 @@ const Footer = () => {
       {showScroll && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 p-3 rounded-circle bg-primary text-white shadow-lg hover:bg-secondary transition-all"
+          aria-label="Scroll to top"
+          className="fixed bottom-5 right-5 bg-red-500 hover:bg-red-600 text-white shadow-lg rounded h-8 w-8 flex items-center justify-center transition"
         >
           <IoIosArrowUp className="text-xl" />
         </button>

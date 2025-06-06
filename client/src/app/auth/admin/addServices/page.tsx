@@ -88,8 +88,8 @@ const AddServicesPage = () => {
     setDescription(item.description);
     setEditingId(item._id);
     setImage(null);
-  // Scroll to the top smoothly when editing
-  window.scrollTo({ top: 0, behavior: "smooth" });
+    // Scroll to the top smoothly when editing
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id: string) => {
@@ -104,12 +104,12 @@ const AddServicesPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b  to-white">
       <Toaster position="top-center" />
 
       <main className="max-w-6xl mx-auto px-4 py-12 flex-grow">
-        <h1 className="text-4xl font-bold mb-12 text-center text-green-700">
-          🏥 {editingId ? "Edit Service" : "Add Service"}
+        <h1 className="text-4xl font-bold mb-12 text-center text-blue-500">
+           {editingId ? "Edit Service" : "Add Service"}
         </h1>
 
         <form
@@ -123,7 +123,7 @@ const AddServicesPage = () => {
               placeholder="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             />
 
@@ -139,7 +139,7 @@ const AddServicesPage = () => {
               placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="p-4 border border-gray-300 rounded-lg col-span-1 md:col-span-2 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="p-4 border border-gray-300 rounded-lg col-span-1 md:col-span-2 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             />
           </div>
@@ -147,7 +147,7 @@ const AddServicesPage = () => {
           <div className="flex flex-wrap gap-4 pt-4">
             <Button
               type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded"
             >
               {editingId ? "Update Service" : "Submit Service"}
             </Button>
@@ -155,7 +155,7 @@ const AddServicesPage = () => {
               <Button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg"
+                className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded"
               >
                 Cancel
               </Button>
@@ -164,10 +164,22 @@ const AddServicesPage = () => {
         </form>
 
         <h2 className="text-3xl font-semibold mb-8 text-gray-800 text-center">
-          💼 Services List
+           Premium Land Cruiser Service & Maintenance
         </h2>
+        <p>
+          Experience exceptional care for your Land Cruiser with our dedicated,
+          expert-level service. Engineered for precision and reliability, our
+          maintenance approach is tailored specifically to meet the demands of
+          your vehicle. From the moment you arrive, our certified technicians
+          take a meticulous approach—utilizing advanced diagnostics and only
+          genuine Toyota parts—to ensure that every component performs exactly
+          as it should. Whether you're conquering rugged terrains or cruising
+          through city streets, we maintain the legendary power, comfort, and
+          durability that define the Land Cruiser legacy. Trust us to preserve
+          your vehicle’s excellence, mile after mile.
+        </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-5">
           {servicesList.map((item) => (
             <div
               key={item._id}
@@ -178,19 +190,23 @@ const AddServicesPage = () => {
                 alt={item.title}
                 className="w-full h-48 object-cover"
               />
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
-                <p className="text-sm text-gray-700 line-clamp-3">{item.description}</p>
+              <div className="p-3">
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-gray-700 line-clamp-3">
+                  {item.description}
+                </p>
                 <div className="flex justify-between mt-4">
-                  <Button
+                  <button
                     onClick={() => handleEdit(item)}
-                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm"
+                    className="mt-1 border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-2 py-1 text-sm rounded transition"
                   >
                     Edit
-                  </Button>
+                  </button>
                   <button
                     onClick={() => handleDelete(item._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm"
+                    className="mt-1 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-2 py-1 text-sm rounded transition"
                   >
                     Delete
                   </button>

@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+
 import { useRouter } from "next/navigation";
 
+// ✅ JavaScript-compatible (optional type hint via comments)
 interface News {
   _id: string;
   title: string;
@@ -36,13 +38,15 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    // Health Tips & News
+    <div className="min-h-screen ">
       <Toaster position="top-center" />
 
       {/* Header Section */}
       <section className="text-center py-10">
-        <h2 className="text-4xl font-bold">
-          Explore the Wild in Style – Land Cruiser Tour Now Available!
+        <h2 className="text-4xl font-bold ">
+          {" "}
+          Explore the Wild in Style – Land Cruiser Tour Now Available!{" "}
         </h2>
         <p className="text-gray-600 mt-2 max-w-7xl mx-auto py-3">
           Adventure meets luxury with our newly launched Land Cruiser Tour,
@@ -62,7 +66,7 @@ const Page = () => {
       {/* News Cards */}
       <main className="container pb-5">
         <div className="row g-4 h-40%">
-          {newsList.slice(0, 4).map((item) => (
+          {newsList.map((item) => (
             <div className="col-12 col-sm-6 col-lg-3" key={item._id}>
               <div className="card h-100 border-1 shadow-sm hover-shadow-lg transition-all overflow-hidden rounded-2xl">
                 {/* Image Section */}
@@ -90,9 +94,9 @@ const Page = () => {
                       ? item.description.slice(0, 50) + "..."
                       : item.description}
                   </p>
-                  <div className="mt-1">
+                  <div className="mt-1 ">
                     <button
-                      className="mt-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white text-sm px-4 py-1 w-34 rounded font-semibold transition"
+                      className="mt-2 border  border-red-500 text-red-500 hover:bg-red-500 hover:text-white text-sm px-4 py-1 w-34 rounded font-semibold transition"
                       onClick={() => handleLearnMore(item._id)}
                     >
                       Learn More
@@ -103,18 +107,6 @@ const Page = () => {
             </div>
           ))}
         </div>
-
-        {/* View All Button */}
-        {newsList.length > 4 && (
-          <div className="text-center py-6">
-            <button
-              onClick={() => router.push("/allNews")}
-              className="mt-2 border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white text-sm px-4 py-2 w-42 rounded font-semibold transition"
-            >
-              View All News
-            </button>
-          </div>
-        )}
       </main>
     </div>
   );

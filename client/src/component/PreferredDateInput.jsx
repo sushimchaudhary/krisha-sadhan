@@ -15,7 +15,7 @@ const PreferredDateInput = ({ value, onChange }) => {
         dateFormat="MMMM d, yyyy" // Shows month name, day, year (e.g. May 24, 2025)
         minDate={new Date()}     // Disable past dates
         placeholderText="Select a date"
-        className="form-control"
+        className="form-control w-64"
       />
     </div>
   );

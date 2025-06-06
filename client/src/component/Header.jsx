@@ -67,12 +67,19 @@ function Header() {
       </section>
 
       {/* Navbar */}
-      <nav className="navbar bg-white navbar-expand-lg py-3 border-top border-bottom sticky-top shadow">
-        <div className="container">
+      <nav className="navbar bg-white navbar-expand-lg py-0 border-top border-bottom sticky-top shadow">
+        <div className="container align-items-center">
           <Link className="navbar-brand" href="/">
-            <h5 className="offcanvas-title flex" id="offcanvasNavbarLabel">
+            {/* <h5 className="offcanvas-title flex" id="offcanvasNavbarLabel">
               𝕶𝖗𝖎𝖘𝖍𝖆<p className="logo text-red-500">𝕾𝖆𝖉𝖍𝖆𝖓</p>
-            </h5>
+            </h5> */}
+
+             <Image
+                  src="/logo.jpg"
+                  alt="krisha Logo"
+                  width={100}
+                  height={10}
+                />
           </Link>
           <button
             className="navbar-toggler"
@@ -96,8 +103,8 @@ function Header() {
                 <Image
                   src="/logo.jpg"
                   alt="krisha Logo"
-                  width={150}
-                  height={150}
+                  width={100}
+                  height={10}
                 />
               </h5>
               <button
@@ -109,7 +116,7 @@ function Header() {
             </div>
 
             <div className="offcanvas-body align-items-center">
-              <ul className="navbar-nav justify-content-end flex-grow-1 end">
+              <ul className="navbar-nav justify-content-end flex-grow-1 end align-items-center">
                 {/* Navigation Links with animation */}
                 {[
                   { label: "Home", href: "/" },
@@ -133,7 +140,7 @@ function Header() {
                 ))}
 
                 {/* Buttons */}
-                <div className="flex gap-3 text-end mt-3">
+                <div className="flex gap-3 text-end">
                   <li>
                     <Link href="/Appointment" className="text-decoration-none">
                       <button className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded">

@@ -165,7 +165,7 @@ const AddNewsPage = () => {
           <div className="flex flex-wrap gap-4 pt-4">
             <Button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow transition"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded shadow transition"
             >
               {editingId ? "Update News" : "Submit News"}
             </Button>
@@ -174,7 +174,7 @@ const AddNewsPage = () => {
               <Button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full shadow transition"
+                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded shadow transition"
               >
                 Cancel
               </Button>
@@ -186,7 +186,7 @@ const AddNewsPage = () => {
           📢 Latest News
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ">
           {newsList.map((item) => (
             <div
               key={item._id}
@@ -197,7 +197,7 @@ const AddNewsPage = () => {
                 alt={item.title}
                 className="w-full h-48 object-cover"
               />
-              <div className="p-5">
+              <div className="p-3">
                 <h3 className="text-lg font-semibold text-gray-800">
                   {item.title}
                 </h3>
@@ -206,15 +206,16 @@ const AddNewsPage = () => {
                   {item.description}
                 </p>
                 <div className="flex justify-between mt-4 ">
-                  <Button
+                  <button
                     onClick={() => handleEdit(item)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-4xl text-sm"
+                    className="mt-1 border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-2 py-1 text-sm rounded transition"
                   >
                     Edit
-                  </Button>
+                  </button>
+
                   <button
                     onClick={() => handleDelete(item._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm"
+                    className="mt-1 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-2 py-1 text-sm rounded transition"
                   >
                     Delete
                   </button>

@@ -362,10 +362,11 @@ const AppointmentPage = () => {
   return (
     <section className="py-4">
       <Toaster position="top-right" />
-      <div className="container">
+      <div className="container ">
+       
         <form onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-lg-6">
+          <div className="row ">
+            <div className="col-lg-6 border-2 shadow rounded">
               <p className="text-red-500 font-semibold">Start Your Journey</p>
               <h3 className="fw-bold">Schedule Your Land Cruiser Tour</h3>
               <div className="row">
@@ -541,6 +542,8 @@ const AppointmentPage = () => {
           </div>
         </form>
       </div>
+
+      //
     </section>
   );
 };

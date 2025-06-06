@@ -1,7 +1,8 @@
-// app/(user)/News/[id]/page.tsx
+'use client';
 
-import axios from "axios";
-import { notFound } from "next/navigation";
+import axios from 'axios';
+import { notFound } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface News {
   _id: string;
@@ -17,20 +18,36 @@ interface Props {
   };
 }
 
-const getNewsById = async (id: string): Promise<News | null> => {
-  try {
-    const res = await axios.get(`http://localhost:5000/api/news/${id}`);
-    return res.data;
-  } catch (error) {
-    console.error("Error fetching news:", error);
-    return null;
-  }
-};
+export default function NewsDetailPage({ params }: Props) {
+  const [news, setNews] = useState<News | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
-export default async function NewsDetailPage({ params }: Props) {
-  const news = await getNewsById(params.id);
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/news/${params.id}`);
+        setNews(res.data);
+      } catch (err) {
+        console.error('Error fetching news:', err);
+        setNews(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchNews();
+  }, [params.id]);
+
+  if (loading) return <div className="text-center py-20">Loading...</div>;
   if (!news) return notFound();
+
+  const toggleDescription = () => setShowFullDescription((prev) => !prev);
+
+  const descriptionToShow =
+    news.description.length > 220 && !showFullDescription
+      ? news.description.slice(0, 220).trimEnd() + '…'
+      : news.description;
 
   return (
     <section className="py-5">
@@ -40,7 +57,7 @@ export default async function NewsDetailPage({ params }: Props) {
           <div className="col-md-4 border-top py-3">
             <div
               className="rounded-2 overflow-hidden"
-              style={{ height: "320px", maxWidth: "100%" }}
+              style={{ height: '320px', maxWidth: '100%' }}
             >
               <img
                 src={`http://localhost:5000${news.image}`}
@@ -54,19 +71,28 @@ export default async function NewsDetailPage({ params }: Props) {
           <div
             className="col-md-8 border-top py-3"
             style={{
-              wordWrap: "break-word",
-              overflowWrap: "break-word",
-              whiteSpace: "pre-line",
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              whiteSpace: 'pre-line',
             }}
           >
             <h1 className="py-3 text-start text-dark">{news.title}</h1>
             <p className="text-muted text-start">By {news.author}</p>
             <p
               className="text-secondary"
-              style={{ lineHeight: "1.7", fontSize: "1.05rem" }}
+              style={{ lineHeight: '1.7', fontSize: '1.05rem' }}
             >
-              {news.description}
+              {descriptionToShow}
             </p>
+
+            {news.description.length > 220 && (
+              <button
+                onClick={toggleDescription}
+                className="mt-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-2 py-1 text-sm rounded transition"
+              >
+                {showFullDescription ? 'See Less ▲' : 'See More ▼'}
+              </button>
+            )}
           </div>
         </div>
       </div>

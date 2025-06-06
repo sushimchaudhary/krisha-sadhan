@@ -105,10 +105,10 @@ const AdminRegisterPage: React.FC = () => {
         <div className="flex flex-col items-center mb-6">
           <Image
             src="/logo.jpg"
-            alt="Hospital Logo"
-            width={150}
+            alt="Krisha Logo"
+            width={90}
             height={150}
-            className="mb-3"
+            className="mx-auto w-[90px] h-[150px]  object-contain"
           />
           <h1 className="text-3xl font-bold text-blue-700">
             Admin Registration
@@ -180,7 +180,7 @@ const AdminRegisterPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full bg-red-500 hover:bg-red-600 transition text-white font-medium py-2 rounded-lg flex justify-center items-center gap-2`}
+            className={`w-full bg-red-500 hover:bg-red-600 transition text-white font-medium py-2 rounded flex justify-center items-center gap-2`}
           >
             {loading ? (
               <>
