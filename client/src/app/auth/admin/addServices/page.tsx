@@ -104,7 +104,7 @@ const AddServicesPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b  to-white">
+    <div className="min-h-screen flex flex-col   to-white">
       <Toaster position="top-center" />
 
       <main className="max-w-6xl mx-auto px-4 py-12 flex-grow">
@@ -183,12 +183,12 @@ const AddServicesPage = () => {
           {servicesList.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden"
+              className="bg-white rounded-2xl  border-1 shadow-md hover:shadow-xl transition-all overflow-hidden"
             >
               <img
                 src={`http://localhost:5000${item.image}`}
                 alt={item.title}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover p-1 rounded-2xl"
               />
               <div className="p-3">
                 <h3 className="text-lg font-semibold text-gray-800">

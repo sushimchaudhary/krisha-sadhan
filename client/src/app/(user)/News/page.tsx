@@ -73,7 +73,7 @@ const Page = () => {
                   <img
                     src={`http://localhost:5000${item.image}`}
                     alt={item.title}
-                    className="img-fluid p-2 rounded-2xl w-100 h-100 object-cover"
+                    className="img-fluid p-1 rounded-2xl w-100 h-100 object-cover"
                   />
                 </div>
                 {/* Body */}

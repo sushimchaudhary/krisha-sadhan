@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   FaClock,
@@ -8,15 +9,30 @@ import {
   FaEnvelope,
   FaFacebookF,
   FaInstagram,
+  
   FaYoutube,
+  FaWhatsapp,
 } from "react-icons/fa";
 import { FaArrowRightLong } from "react-icons/fa6";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
+import { useAuth } from "../app/context/AuthContext";
+
 function Header() {
+
+
+    // login vayesi matra dashboard dekhine
+  const { isAuthenticated, user } = useAuth();
+
   const [isAdmin, setIsAdmin] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+
+
+   // hide header
+  const pathname = usePathname(); // ✅ always call at top level
+  const hideHeader = pathname === "/auth/adminLogin"; // ✅ create a flag
+  const hideFooter = pathname === "/auth/adminRegister/superAdmin";
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
@@ -34,6 +50,13 @@ function Header() {
 
   const formattedTime = currentTime.toLocaleTimeString();
 
+
+
+  if (hideHeader) return null; // ✅ Early return if path matches
+  if (hideFooter)  return null;
+
+
+
   return (
     <>
       {/* Header Top Bar */}
@@ -48,12 +71,15 @@ function Header() {
                 <FaMapMarkerAlt className="me-1" /> Tarakeshwar, Kathmandu
               </span>
               <span className="d-flex align-items-center ms-md-3">
-                <FaEnvelope className="me-1" /> info@nepguru.com
+                <FaEnvelope className="me-1" /> info@landcruiser.com
               </span>
             </div>
             <div className="col-md-4 d-flex justify-content-center justify-content-md-end gap-3 mt-2 mt-md-0">
-              <a href="#" className="text-white">
+              <a href="https://www.facebook.com/sushim.ch" className="text-white">
                 <FaFacebookF />
+              </a>
+              <a href="#" className="text-white">
+                <FaWhatsapp />
               </a>
               <a href="#" className="text-white">
                 <FaInstagram />
@@ -70,16 +96,7 @@ function Header() {
       <nav className="navbar bg-white navbar-expand-lg py-0 border-top border-bottom sticky-top shadow">
         <div className="container align-items-center">
           <Link className="navbar-brand" href="/">
-            {/* <h5 className="offcanvas-title flex" id="offcanvasNavbarLabel">
-              𝕶𝖗𝖎𝖘𝖍𝖆<p className="logo text-red-500">𝕾𝖆𝖉𝖍𝖆𝖓</p>
-            </h5> */}
-
-             <Image
-                  src="/logo.jpg"
-                  alt="krisha Logo"
-                  width={100}
-                  height={10}
-                />
+            <Image src="/logo.jpg" alt="krisha Logo" width={100} height={10} />
           </Link>
           <button
             className="navbar-toggler"
@@ -100,12 +117,7 @@ function Header() {
           >
             <div className="offcanvas-header">
               <h5 className="offcanvas-title" id="offcanvasNavbarLabel">
-                <Image
-                  src="/logo.jpg"
-                  alt="krisha Logo"
-                  width={100}
-                  height={10}
-                />
+                <Image src="/logo.jpg" alt="krisha Logo" width={100} height={10} />
               </h5>
               <button
                 type="button"
@@ -117,8 +129,7 @@ function Header() {
 
             <div className="offcanvas-body align-items-center">
               <ul className="navbar-nav justify-content-end flex-grow-1 end align-items-center">
-                {/* Navigation Links with animation */}
-                {[
+                {[ // Nav Links
                   { label: "Home", href: "/" },
                   { label: "About", href: "/About" },
                   { label: "Services", href: "/Services" },
@@ -128,7 +139,7 @@ function Header() {
                 ].map(({ label, href }) => (
                   <li key={label} className="nav-item group relative mx-1">
                     <Link
-                      className="nav-link text-gray-800 transition-colors "
+                      className="nav-link text-gray-800 transition-colors"
                       href={href}
                     >
                       <span className="relative inline-block">
@@ -159,6 +170,17 @@ function Header() {
                       </Link>
                     </li>
                   )}
+
+
+                  {/* ✅ Dashboard only if user is authenticated and role is 'admin' */}
+            {/* {isAuthenticated && user?.role === "admin" && (
+              <Link
+                href="/Dashboard/adminDashboard"
+                className="btn btn-primary px-3 py-2"
+              >
+                Dashboard
+              </Link>
+            )} */}
                 </div>
               </ul>
             </div>

@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className=" text-white flex justify-between items-center">
       <div className="font-bold text-lg">
-        <Link href="/">Hospital System</Link>
+        <Link href="/">LandCruiser System</Link>
       </div>
       <div className="space-x-6">
         {role === "admin" && (

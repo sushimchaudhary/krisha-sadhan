@@ -132,7 +132,7 @@ const AddNewsPage = () => {
               placeholder="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             />
 
@@ -141,7 +141,7 @@ const AddNewsPage = () => {
               placeholder="Author"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
-              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             />
 
@@ -157,7 +157,7 @@ const AddNewsPage = () => {
               placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="p-4 border border-gray-300 rounded-lg col-span-1 md:col-span-2 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-4 border border-gray-300 rounded-lg col-span-1 md:col-span-2 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             />
           </div>
@@ -190,12 +190,12 @@ const AddNewsPage = () => {
           {newsList.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden"
+              className="bg-white rounded-2xl border-1 shadow-md hover:shadow-xl transition-all overflow-hidden"
             >
               <img
                 src={`http://localhost:5000${item.image}`}
                 alt={item.title}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover p-1 rounded-2xl"
               />
               <div className="p-3">
                 <h3 className="text-lg font-semibold text-gray-800">

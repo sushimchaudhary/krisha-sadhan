@@ -13,6 +13,9 @@ interface Service {
   link: string;
 }
 
+
+
+
 const ServicesPage = () => {
   const [servicesList, setServicesList] = useState<Service[]>([]);
   const router = useRouter();
@@ -59,14 +62,14 @@ const ServicesPage = () => {
         </div>
 
         <div className="row g-4">
-          {servicesList.slice(0, 3).map((item) => (
-            <div key={item._id} className="col-12 col-sm-6 col-lg-4">
-              <div className="card h-100 shadow-sm border-0">
-                <div style={{ height: "250px", overflow: "hidden" }}>
+          {servicesList.slice(0, 4).map((item) => (
+            <div key={item._id} className="col-12 col-sm-6 col-lg-3">
+              <div className="card h-100 shadow-sm border-1 p-1 ">
+                <div style={{ height: "200px", overflow: "hidden" }}>
                   <img
                     src={`http://localhost:5000${item.image}`}
                     alt={item.title}
-                    className="card-img-top w-100 h-100"
+                    className="card-img-top w-100 h-100 rounded "
                     style={{
                       objectFit: "cover",
                       borderTopLeftRadius: "0.5rem",
@@ -74,15 +77,15 @@ const ServicesPage = () => {
                     }}
                   />
                 </div>
-                <div className="card-body d-flex flex-column">
+                <div className="card-body d-flex flex-column ">
                   <h5 className="card-title fw-semibold">{item.title}</h5>
                   <p className="card-text text-muted" style={{ flexGrow: 1 }}>
-                    {item.description.length > 120
-                      ? item.description.slice(0, 120) + "..."
+                    {item.description.length > 50
+                      ? item.description.slice(0, 50) + "..."
                       : item.description}
                   </p>
                   <button
-                    className="mt-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white text-sm px-4 py-2 w-34 rounded font-semibold transition"
+                    className="mt-0 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white text-sm px-4 py-2 w-34 rounded font-semibold transition"
                     onClick={() => handleLearnMore(item._id)}
                   >
                     Learn More

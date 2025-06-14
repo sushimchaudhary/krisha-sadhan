@@ -1,13 +1,16 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+
 import {
   FaFacebookF,
-  FaTwitter,
+  
   FaInstagram,
-  FaLinkedinIn,
+  
   FaPhoneAlt,
   FaMapMarkerAlt,
   FaEnvelope,
+  FaWhatsapp,
 } from "react-icons/fa";
 import { IoIosArrowUp } from "react-icons/io";
 
@@ -18,9 +21,9 @@ const footerData = {
       "The King of Land Cruiser Tours delivers exceptional travel experiences focusing on comfort, safety, and unforgettable exploration.",
     social: [
       { icon: <FaFacebookF />, link: "#" },
-      { icon: <FaTwitter />, link: "#" },
+     
       { icon: <FaInstagram />, link: "#" },
-      { icon: <FaLinkedinIn />, link: "#" },
+      { icon: <FaWhatsapp />, link: "#" },
     ],
   },
   links: [
@@ -46,6 +49,13 @@ const footerData = {
 const Footer = () => {
   const [showScroll, setShowScroll] = useState(false);
 
+  // hide footrrer 
+  const pathname = usePathname(); // ✅ always call at top level
+  const hideHeader = pathname === "/auth/adminLogin"; // ✅ create a flag
+  const hideFooter = pathname === "/auth/adminRegister/superAdmin";
+
+
+
   useEffect(() => {
     const onScroll = () => setShowScroll(window.scrollY > 300);
     window.addEventListener("scroll", onScroll);
@@ -53,6 +63,9 @@ const Footer = () => {
   }, []);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (hideHeader) return null; // ✅ Early return if path matches
+  if (hideFooter) return null;
 
   return (
     <>
@@ -80,11 +93,14 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-xl font-semibold  mb-4">Quick Links</h3>
             <ul className="space-y-3">
               {footerData.links.map(({ label, href }, i) => (
                 <li key={i}>
-                  <a href={href} className="text-white text-decoration-none">
+                  <a
+                    href={href}
+                    className="text-white text-decoration-none hover:underline underline-offset-4 hover:text-red-300 transition-all duration-200"
+                  >
                     {label}
                   </a>
                 </li>

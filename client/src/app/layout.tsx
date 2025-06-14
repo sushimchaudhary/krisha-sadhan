@@ -5,7 +5,8 @@ import "./global1.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../component/Header'
 import Footer from '../component/Footer'
-
+import { AuthProvider } from "./context/AuthContext";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 
 
@@ -28,9 +29,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <GoogleOAuthProvider
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
+        >
+        <AuthProvider>
        <Header/>
         {children}
         <Footer/>
+        </AuthProvider>
+        </GoogleOAuthProvider>
          <link
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
           rel="stylesheet"

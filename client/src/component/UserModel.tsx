@@ -113,35 +113,36 @@ export default function UserModal({
   return (
     <div
       className="
-        fixed inset-0 flex justify-center items-center z-50 p-6
-        bg-gradient-to-tr from-indigo-900/70 via-black/60 to-gray-900/80
-        backdrop-blur-sm
-      "
+    fixed inset-0 z-[99999] flex justify-center items-start pt-24 px-4
+    bg-gradient-to-tr from-indigo-900/70 via-black/60 to-gray-900/80
+    backdrop-blur-sm overflow-y-auto
+  "
     >
       <div
         className="
-          bg-white rounded-3xl shadow-2xl 
-          w-full max-w-6xl max-h-[85vh] overflow-y-auto 
-          p-10 relative
-          flex flex-col
-        "
+      bg-white rounded-3xl shadow-2xl 
+      w-full max-w-7xl max-h-[85vh] overflow-y-auto 
+      p-6 md:p-10 relative flex flex-col
+    "
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-8 border-b border-gray-300 pb-4">
-          <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+
+          <h2 className="text-center text-3xl font-extrabold text-gray-900 tracking-tight items-center justify-center">
             User Management
           </h2>
+
           <button
             onClick={onClose}
             aria-label="Close modal"
             className="text-gray-400 hover:text-red-600 transition-colors rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-red-500"
-          >
+          > 
             <IconClose />
           </button>
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm flex-grow">
+        <div className="overflow-x-auto rounded-lg border-2 border-gray-200 shadow-sm flex-grow">
           <table className="w-full table-auto border-collapse text-gray-700">
             <thead className="bg-gray-100 sticky top-0 z-10">
               <tr className="uppercase text-sm tracking-wider text-gray-600 select-none">
@@ -173,7 +174,7 @@ export default function UserModal({
 
                     {editUserEmail === user.email ? (
                       <>
-                        <td className="py-3 px-6">
+                        <td className="py-2 px-6">
                           <input
                             type="text"
                             value={editUsername}
@@ -185,7 +186,7 @@ export default function UserModal({
                         <td className="py-3 px-6 text-gray-600 select-none">
                           {user.email}
                         </td>
-                        <td className="py-3 px-6">
+                        <td className="py-2 px-6">
                           <select
                             value={editRole}
                             onChange={(e) => setEditRole(e.target.value)}
@@ -195,66 +196,66 @@ export default function UserModal({
                             <option value="admin">Admin</option>
                           </select>
                         </td>
-                        <td className="py-3 px-6 text-center">
+                        <td className="py-2 px-6 text-center">
                           <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 font-semibold text-xs select-none">
                             <IconCheck />
                             Active
                           </span>
                         </td>
-                        <td className="py-3 px-6 text-center space-x-3">
+                        <td className="py-2 px-7 gap-4 text-center space-x-3">
+
                           <button
                             onClick={saveEdit}
-                            className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-1 rounded-lg transition"
+                            className="btn btn-success"
                           >
                             Save
                           </button>
                           <button
                             onClick={() => setEditUserEmail(null)}
-                            className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-1 rounded-lg transition"
+                            className="btn btn-primary"
                           >
                             Cancel
                           </button>
+
                         </td>
                       </>
                     ) : (
                       <>
-                        <td className="py-4 px-6 font-semibold">{user.username}</td>
-                        <td className="py-4 px-6 text-gray-600">{user.email}</td>
-                        <td className="py-4 px-6 capitalize">{user.role}</td>
-                        <td className="py-4 px-6 text-center">
+                        <td className="py-3 px-6 font-semibold">{user.username}</td>
+                        <td className="py-3 px-6 text-gray-600">{user.email}</td>
+                        <td className="py-3 px-6 capitalize">{user.role}</td>
+                        <td className="py-3 px-6 text-center">
                           <button
                             onClick={() =>
                               onUpdateUser({ ...user, active: !user.active })
                             }
-                            className={`inline-flex items-center justify-center space-x-1 px-4 py-1 rounded-full font-semibold text-xs transition ${
-                              user.active
-                                ? "bg-green-200 text-green-800 hover:bg-green-300"
-                                : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-                            }`}
-                            aria-label={`Set user ${
-                              user.active ? "offline" : "online"
-                            }`}
+                            className={`inline-flex items-center justify-center space-x-1 px-4 py-1 rounded-full font-semibold text-xs transition ${user.active
+                              ? "bg-green-200 text-green-800 hover:bg-green-300"
+                              : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                              }`}
+                            aria-label={`Set user ${user.active ? "offline" : "online"
+                              }`}
                           >
                             {user.active ? <IconCheck /> : <IconOffline />}
                             <span>{user.active ? "Online" : "Offline"}</span>
                           </button>
                         </td>
-                        <td className="py-4 px-6 text-center space-x-6">
+                        <td className="flex  gap-3 py-4 px-6 text-center space-x-6">
                           <button
                             onClick={() => startEdit(user)}
                             className="text-indigo-600 hover:text-indigo-800 font-semibold transition flex items-center justify-center"
                             aria-label={`Edit user ${user.username}`}
                           >
                             <IconEdit />
-                            Edit
+
                           </button>
                           <button
                             onClick={() => onDeleteUser(user)}
-                            className="text-red-600 hover:text-red-800 font-semibold transition flex items-center justify-center"
+                            className="btn-success text-red-600 hover:text-red-800 font-semibold transition flex items-center justify-center"
                             aria-label={`Delete user ${user.username}`}
                           >
                             <IconDelete />
-                            Delete
+
                           </button>
                         </td>
                       </>
@@ -267,5 +268,6 @@ export default function UserModal({
         </div>
       </div>
     </div>
+
   );
 }

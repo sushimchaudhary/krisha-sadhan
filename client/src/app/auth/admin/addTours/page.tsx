@@ -151,7 +151,7 @@ const DoctorPage = () => {
             placeholder="Tour Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             required
           />
 
@@ -160,7 +160,7 @@ const DoctorPage = () => {
             placeholder="Duration (e.g., 3 days)"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             required
           />
           <div className="mb-4">
@@ -172,7 +172,7 @@ const DoctorPage = () => {
               placeholder="Enter price"
               value={price}
               onChange={(e) => setPrice(Number(e.target.value))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-150 ease-in-out"
               required
             />
           </div>
@@ -182,7 +182,7 @@ const DoctorPage = () => {
             placeholder="Location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             required
           /> */}
 
@@ -198,7 +198,7 @@ const DoctorPage = () => {
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 col-span-1 md:col-span-2"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 col-span-1 md:col-span-2"
             required
           />
 
@@ -212,12 +212,12 @@ const DoctorPage = () => {
                 placeholder="Enter offer"
                 value={newEducation}
                 onChange={(e) => setNewEducation(e.target.value)}
-                className="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-red-500"
               />
               <Button
                 type="button"
                 onClick={handleAddEducation}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 m-2 rounded"
               >
                 Add
               </Button>
@@ -237,7 +237,7 @@ const DoctorPage = () => {
           <div className="flex gap-4 col-span-1 md:col-span-2">
             <Button
               type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-semibold"
+              className="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded font-semibold"
             >
               {editingDoctorId ? "Update Tour" : "Submit Tour"}
             </Button>
@@ -245,7 +245,7 @@ const DoctorPage = () => {
               <Button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-500 hover:bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold"
+                className="bg-gray-500 hover:bg-gray-600 text-white py-3 px-6 rounded font-semibold"
               >
                 Cancel
               </Button>
@@ -253,21 +253,21 @@ const DoctorPage = () => {
           </div>
         </form>
 
-        <h2 className="text-3xl font-semibold mb-6 text-gray-800">
+        <h2 className="text-3xl font-semibold mb-6 text-gray-800 text-center m-4">
           📋 Tour List
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 h-[85%]">
           {doctors.map((doc) => (
             <div
               key={doc._id}
-              className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden"
+              className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden border-2"
             >
               <img
                 src={`http://localhost:5000${doc.image}`}
                 alt={doc.title}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover p-1 rounded-2xl"
               />
-              <div className="gap-2 mt-2">
+              <div className="gap-2 mt-0">
                   {doc.education.map((edu, index) => (
                     <div
                       key={`edu-${doc._id}-${index}`}
@@ -277,8 +277,8 @@ const DoctorPage = () => {
                     </div>
                   ))}
                 </div>
-              <div className="p-2 flex flex-col flex-grow">
-                <h3 className="text-xl font-semibold text-gray-900">
+              <div className="p-2 flex flex-col flex-grow ">
+                <h3 className="text-xl font-semibold text-gray-900 m-0">
                   {doc.title}
                 </h3>
                 {/* <span className="text-blue-600 font-medium">
@@ -287,7 +287,7 @@ const DoctorPage = () => {
                 <span className="text-sm text-gray-500">{doc.duration}</span>
                 <p className="text-green-600 font-bold mt-1">NPR {doc.price}</p>
 
-                <p className="text-sm text-gray-700 mt-1 line-clamp-3">
+                <p className="text-sm text-gray-700 mt-1 line-clamp-3 m-1">
                   {doc.description}
                 </p>
 

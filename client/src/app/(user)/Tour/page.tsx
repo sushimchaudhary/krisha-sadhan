@@ -264,7 +264,7 @@ const DoctorPage = () => {
           {visibleDoctors.map((doc) => (
             <div
               key={doc._id}
-              className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden cursor-pointer flex flex-col"
+              className="bg-white rounded-xl shadow-md hover:shadow-xl border-1 transition overflow-hidden cursor-pointer flex flex-col"
               onClick={() => router.push(`/Tour/${doc._id}`)}
             >
               {/* Image container with relative for overlay */}
@@ -272,7 +272,7 @@ const DoctorPage = () => {
                 <img
                   src={`http://localhost:5000${doc.image}`}
                   alt={doc.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover p-1 rounded-2xl"
                 />
                 {/* Education overlay on top-right */}
                 <div className="absolute top-2 right-2 bg-yellow-600 bg-opacity-80 text-white rounded-md p-2 max-w-[90%]">
